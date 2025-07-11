@@ -1,0 +1,39 @@
+
+/* ㄴ자 형태의 스피치 연습 카드 */
+.lShapeSpeechCard {
+  grid-column: 1 / 2;
+  grid-row: 1 / 3;
+  background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+  border-radius: 16px;
+  padding: 2rem;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  box-shadow: 0 4px 20px rgba(116, 185, 255, 0.3);
+  position: relative;
+  min-height: 450px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  pointer-events: auto;
+  user-select: none;
+  
+  /* ㄴ자 모양을 위한 클립 패스 (좌우대칭 ㄱ자) */
+  clip-path: polygon(
+    0% 0%,           /* 좌상단 */
+    100% 0%,         /* 우상단 */
+    100% 100%,       /* 우하단 */
+    35% 100%,        /* 가로 절단점 */
+    35% 65%,         /* 세로 절단점 */
+    0% 65%           /* 좌측 중간 */
+  );
+}
+
+.lShapeSpeechCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(116, 185, 255, 0.4);
+}
+
+.lShapeSpeechCard:active {
+  transform: translateY(-1px);
+}
