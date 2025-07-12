@@ -1,0 +1,276 @@
+/* src/components/Modal/PurposeSelectionModal.module.css */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-out;
+    backdrop-filter: blur(5px);
+    padding: 2rem;
+    box-sizing: border-box;
+  }
+  
+  .modalContainer {
+    background: white;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 700px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease-out;
+    position: relative;
+    margin: auto;
+  }
+  
+  .modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 2rem 1rem 2rem;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .modalTitle {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #2d3436;
+    margin: 0;
+  }
+  
+  .closeButton {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #999;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .closeButton:hover {
+    background: #f5f5f5;
+    color: #333;
+  }
+  
+  .modalContent {
+    padding: 1rem 2rem 2rem 2rem;
+  }
+  
+  .greeting {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #636e72;
+    margin-bottom: 2rem;
+    line-height: 1.5;
+  }
+  
+  .optionsContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .optionCard {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border: 2px solid #e9ecef;
+    border-radius: 16px;
+    padding: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .optionCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    border-color: #74b9ff;
+  }
+  
+  .optionCard:nth-child(1) {
+    background: linear-gradient(135deg, #74b9ff20 0%, #0984e320 100%);
+  }
+  
+  .optionCard:nth-child(1):hover {
+    background: linear-gradient(135deg, #74b9ff30 0%, #0984e330 100%);
+    border-color: #74b9ff;
+  }
+  
+  .optionCard:nth-child(2) {
+    background: linear-gradient(135deg, #fd79a820 0%, #e8439320 100%);
+  }
+  
+  .optionCard:nth-child(2):hover {
+    background: linear-gradient(135deg, #fd79a830 0%, #e8439330 100%);
+    border-color: #fd79a8;
+  }
+  
+  .optionIcon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+  
+  .optionTitle {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #2d3436;
+    margin-bottom: 0.5rem;
+  }
+  
+  .optionDescription {
+    color: #636e72;
+    margin-bottom: 1.5rem;
+    line-height: 1.4;
+  }
+  
+  .optionFeatures {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    text-align: left;
+  }
+  
+  .feature {
+    font-size: 0.9rem;
+    color: #74b9ff;
+    font-weight: 500;
+  }
+  
+  .optionCard:nth-child(2) .feature {
+    color: #fd79a8;
+  }
+  
+  .optionButton {
+    background: #74b9ff;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    display: inline-block;
+    margin-top: auto;
+  }
+  
+  .optionCard:nth-child(2) .optionButton {
+    background: #fd79a8;
+  }
+  
+  .optionCard:hover .optionButton {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(116, 185, 255, 0.4);
+  }
+  
+  .optionCard:nth-child(2):hover .optionButton {
+    box-shadow: 0 5px 15px rgba(253, 121, 168, 0.4);
+  }
+  
+  .helpText {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+    border-left: 4px solid #74b9ff;
+  }
+  
+  .helpText p {
+    margin: 0;
+    color: #636e72;
+    font-size: 0.95rem;
+  }
+  
+  .helpText strong {
+    color: #2d3436;
+  }
+  
+  /* 애니메이션 */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* 모바일 반응형 */
+  @media (max-width: 768px) {
+    .modalOverlay {
+      padding: 1rem;
+    }
+    
+    .modalContainer {
+      max-width: 100%;
+      max-height: 85vh;
+    }
+    
+    .modalHeader {
+      padding: 1.5rem 1.5rem 1rem 1.5rem;
+    }
+    
+    .modalTitle {
+      font-size: 1.3rem;
+    }
+    
+    .modalContent {
+      padding: 1rem 1.5rem 1.5rem 1.5rem;
+    }
+    
+    .optionsContainer {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    
+    .optionCard {
+      padding: 1.5rem;
+    }
+    
+    .optionIcon {
+      font-size: 2.5rem;
+    }
+    
+    .optionTitle {
+      font-size: 1.2rem;
+    }
+    
+    .greeting {
+      font-size: 1rem;
+    }
+  }
+  
+  /* 접근성 */
+  .optionCard:focus {
+    outline: 2px solid #74b9ff;
+    outline-offset: 2px;
+  }
+  
+  .optionCard:nth-child(2):focus {
+    outline: 2px solid #fd79a8;
+  }
