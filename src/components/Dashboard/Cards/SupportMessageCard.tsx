@@ -13,7 +13,7 @@ export default function SupportMessageCard({ user }: SupportMessageCardProps) {
   return (
     <DashboardCard
       className={styles.supportMessageCard}
-      href="/support-messages"
+      href="/ocean-messages"
       color="#00b894"
     >
       <div className={styles.cardContent}>
