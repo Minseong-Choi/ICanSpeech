@@ -4,12 +4,11 @@ export default function ScriptView() {
   return (
     <div
       style={{
-        width: "50%",
+        width: "100%",
         height: 400,
         backgroundColor: "#fff",
         borderRadius: 12,
         padding: 16,
-        boxShadow: "0 0 4px rgba(0,0,0,0.1)",
       }}
     >
       <h3 style={{ fontWeight: "bold" }}>발표 스크립트</h3>
