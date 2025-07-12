@@ -1,7 +1,6 @@
 // src/components/Dashboard/Cards/SpeechPracticeCard.tsx
 import React from 'react';
 import { User } from 'next-auth';
-import DashboardCard from '../DashboardCard';
 import styles from './SpeechPracticeCard.module.css';
 
 interface SpeechPracticeCardProps {
@@ -13,10 +12,22 @@ const SpeechPracticeCard: React.FC<SpeechPracticeCardProps> = ({ user }) => {
     console.log('스피치 연습 클릭됨!'); // 디버깅용
     window.location.href = '/practice';
   };
+
+  const handleCardClick = () => {
+    handleStartPractice();
+  };
+
   return (
-    <DashboardCard 
-      className={styles.speechPracticeCard} 
-      href="/practice" 
+    <div 
+      className={styles.speechPracticeCard}
+      onClick={handleCardClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          handleStartPractice();
+        }
+      }}
     >
       <div className={styles.cardContent}>
         <div className={styles.cardHeader}>
@@ -62,7 +73,7 @@ const SpeechPracticeCard: React.FC<SpeechPracticeCardProps> = ({ user }) => {
           <span className={styles.buttonIcon}>→</span>
         </button>
       </div>
-    </DashboardCard>
+    </div>
   );
 };
 
