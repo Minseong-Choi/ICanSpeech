@@ -38,7 +38,7 @@ export default function HomePage() {
         }}>
           🎤
         </div>
-        <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>스피처</h1>
+        <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>AI캔 스피치</h1>
         <p>페이지를 로딩중입니다...</p>
       </div>
     </div>
