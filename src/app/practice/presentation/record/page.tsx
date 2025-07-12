@@ -3,7 +3,7 @@
 import BackButton from "../../../../components/BackButton";
 import WebcamView from "../../../../components/WebcamView";
 import ScriptView from "../../../../components/ScriptView";
-import RecordButton from "../../../../components/RecordButton";
+import UploadMaterial from "../../../../components/UploadMaterial"
 
 export default function PresentationRecordPage() {
   return (
@@ -22,21 +22,49 @@ export default function PresentationRecordPage() {
         <BackButton />
       </div>
 
-      {/* 본문: 웹캠 + 스크립트 */}
+      {/* 본문: 왼쪽 (웹캠 + 버튼) / 오른쪽 (스크립트) */}
       <div
         style={{
           display: "flex",
-          justifyContent: "space-between",
           gap: 24,
+          flex: 1,
         }}
       >
-        <WebcamView />
-        <ScriptView />
-      </div>
+        {/* 왼쪽: 웹캠 + 버튼 */}
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 16 }}>
+          <WebcamView />
+          <div style={{ display: "flex", justifyContent: "center" }}>
+                <button
+                    style={{
+                        padding: "12px 24px",
+                        fontSize: 16,
+                        fontWeight: "bold",
+                        backgroundColor: "#e63946",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: 8,
+                        cursor: "pointer",
+                    }}
+                >
+                    ⏺ 녹화 시작
+                </button>
+          </div>
+        </div>
 
-      {/* 하단: 녹화 시작 버튼 */}
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <RecordButton />
+        {/* 오른쪽: 스크립트 (길게) */}
+        <div
+          style={{
+            flex: 1,
+            overflowY: "auto",
+            backgroundColor: "#ffffff",
+            padding: 20,
+            borderRadius: 8,
+            boxShadow: "0 0 4px rgba(0,0,0,0.1)",
+          }}
+        >
+          <UploadMaterial/>
+          <ScriptView />
+        </div>
       </div>
     </div>
   );
