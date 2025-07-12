@@ -1,0 +1,72 @@
+/* src/components/Dashboard/DashboardCard.module.css */
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.card:focus {
+  outline: 2px solid #74b9ff;
+  outline-offset: 2px;
+}
+
+/* 색상 테마 */
+.blue {
+  background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+  color: white;
+}
+
+.pink {
+  background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
+  color: white;
+}
+
+.green {
+  background: linear-gradient(135deg, #00cec9 0%, #00b894 100%);
+  color: white;
+}
+
+.yellow {
+  background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+  color: #2d3436;
+}
+
+/* 기본 흰색 카드 */
+.card:not(.blue):not(.pink):not(.green):not(.yellow) {
+  background: white;
+  color: #2d3436;
+  border: 1px solid #e9ecef;
+}
+
+.card:not(.blue):not(.pink):not(.green):not(.yellow):hover {
+  border-color: #74b9ff;
+}
+
+/* 접근성 */
+.card[role="button"] {
+  cursor: pointer;
+}
+
+.card[role="button"]:focus-visible {
+  outline: 2px solid #74b9ff;
+  outline-offset: 2px;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .card {
+    padding: 1rem;
+    border-radius: 12px;
+  }
+}
