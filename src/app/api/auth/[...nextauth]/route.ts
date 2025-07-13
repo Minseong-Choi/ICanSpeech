@@ -1,4 +1,4 @@
-import NextAuth from 'next-auth';
+import NextAuth, { AuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { MongoDBAdapter } from '@auth/mongodb-adapter';
 import { MongoClient } from 'mongodb';
@@ -9,7 +9,7 @@ import User, { IUser } from '@/models/User';
 // MongoDB 클라이언트 생성
 const client = new MongoClient(process.env.MONGODB_URI!);
 
-const handler = NextAuth({
+export const authOptions: AuthOptions = {
   // MongoDB 어댑터 설정 (세션과 계정 정보 저장용)
   adapter: MongoDBAdapter(client),
   
@@ -113,6 +113,8 @@ const handler = NextAuth({
   
   // 디버그 모드 (개발 환경에서만)
   debug: process.env.NODE_ENV === 'development',
-});
+};
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };

@@ -2,7 +2,7 @@
 
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import DashboardHeader from '@/components/Dashboard/DashboardHeader';
 import WelcomeSection from '@/components/Dashboard/WelcomeSection';
 import DashboardGrid from '@/components/Dashboard/DashboardGrid';
@@ -12,6 +12,25 @@ import styles from './page.module.css';
 export default function DashboardPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const [isScrolled, setIsScrolled] = useState(false);
+  const mainRef = useRef<HTMLElement | null>(null);
+
+  const handleScroll = () => {
+    if (mainRef.current) {
+      const scrollTop = mainRef.current.scrollTop;
+      setIsScrolled(scrollTop > 20);
+    }
+  };
+
+  useEffect(() => {
+    const mainElement = mainRef.current;
+    if (mainElement) {
+      mainElement.addEventListener('scroll', handleScroll);
+      return () => {
+        mainElement.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, []);
 
   // 인증 확인
   useEffect(() => {
@@ -33,8 +52,10 @@ export default function DashboardPage() {
   return (
     <div className={styles.container}>
       <DashboardHeader user={session.user} />
-      <main className={styles.main}>
-        <WelcomeSection user={session.user} />
+      <main className={styles.main} ref={mainRef}>
+        <div className={`${styles.welcomeSection} ${isScrolled ? styles.welcomeSectionScrolled : ''}`}>
+          <WelcomeSection user={session.user} />
+        </div>
         <DashboardGrid user={session.user} />
       </main>
     </div>
