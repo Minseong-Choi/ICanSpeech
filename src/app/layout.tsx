@@ -4,7 +4,7 @@ import './globals.css';
 import Providers from '@/components/Providers';
 
 export const metadata: Metadata = {
-  title: '스피처 - 스피치 분석 서비스',
+  title: 'AI캔 스피치 - 스피치 분석 서비스',
   description: '자신감 있는 스피치, 연습부터 분석까지 한번에',
 };
 
