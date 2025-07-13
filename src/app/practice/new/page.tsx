@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 //import { useSession } from 'next-auth/react';
 import styles from './page.module.css';
-import BackButton from '@/components/BackButton';
+import BackButton from '@/components/UI/BackButton';
 
 export default function NewPracticePage() {
   const router = useRouter();

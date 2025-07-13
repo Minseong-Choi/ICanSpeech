@@ -2,8 +2,8 @@
 
 import React from "react";
 //import { useRouter } from "next/navigation";
-import BackButton from "../../../components/BackButton";
-import CardList from "../../../components/TakeList";
+import BackButton from "../../../components/UI/BackButton";
+import CardList from "../../../components/practice/TakeList";
 //import FeedbackBox from "../../../components/FeedbackBox";
 
 export default function PresentationPage() {
@@ -54,6 +54,7 @@ export default function PresentationPage() {
       {/* 녹화 및 업로드 카드 리스트 */}
       <CardList
         takes={takes}
+        type="presentation"
         onUploadClick={handleUploadClick}
       />
 
