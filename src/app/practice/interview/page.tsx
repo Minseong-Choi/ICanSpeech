@@ -1,18 +1,12 @@
 "use client";
 
 import React from "react";
-import { useRouter } from "next/navigation";
-import BackButton from "../../../components/BackButton";
-import CardList from "../../../components/TakeList";
+import BackButton from "../../../components/UI/BackButton";
+import CardList from "../../../components/practice/TakeList";
 //import FeedbackBox from "../../../components/FeedbackBox";
 
-export default function PresentationPage() {
-  const router = useRouter();  
+export default function InterviewPage() {
   const takes = [1, 2, 3, 4, 5];
-
-  const handlePracticeClick = () => {
-    router.push("/projectList/interview/record"); 
-  };
 
   const handleUploadClick = () => {
     console.log("면접 자료 업로드하기");
@@ -57,7 +51,7 @@ export default function PresentationPage() {
 
       <CardList
         takes={takes}
-        onPracticeClick={handlePracticeClick}
+        type="interview"
         onUploadClick={handleUploadClick}
       />
       발표 속도가 안정적이에요! 시선 처리가 훨씬 좋아졌어요.

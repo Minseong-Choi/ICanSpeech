@@ -6,11 +6,13 @@ import TakeCard from "./TakeCard";
 
 type Props = {
   takes: number[]; // 예: [1, 2, 3]
-  onPracticeClick?: () => void;
+  type: 'interview' | 'presentation';
   onUploadClick?: () => void;
 };
 
-export default function CardList({ takes, onPracticeClick, onUploadClick }: Props) {
+export default function CardList({ takes, type, onUploadClick }: Props) {
+  const recordRoute = `./${type}/record`;
+
   return (
     <div
       style={{
@@ -23,7 +25,7 @@ export default function CardList({ takes, onPracticeClick, onUploadClick }: Prop
         paddingBottom: 8,
       }}
     >
-      <PracticeButton text="발표 연습하기" route="./presentation/record" />
+      <PracticeButton text="발표 연습하기" route={recordRoute} />
       <UploadMaterial text="발표 자료 업로드하기" onClick={onUploadClick} />
 
       {takes

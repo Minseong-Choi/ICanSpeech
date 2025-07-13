@@ -5,7 +5,7 @@ import WebcamView from "../../../../components/practice/WebcamView";
 import ScriptView from "../../../../components/practice/ScriptView";
 import UploadMaterial from "../../../../components/practice/UploadMaterial"
 
-export default function PresentationRecordPage() {
+export default function InterviewRecordPage() {
   return (
     <div
       style={{
