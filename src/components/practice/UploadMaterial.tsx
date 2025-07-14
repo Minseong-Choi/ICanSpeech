@@ -10,10 +10,10 @@ const Page = dynamic(() => import("react-pdf").then(mod => mod.Page), { ssr: fal
 
 type Props = {
   text?: string;
+  onClick?: () => void;
 };
 
-export default function UploadMaterial({ text = "자료 추가하기" }: Props) {
-  const [pdfFile, setPdfFile] = useState<File | null>(null);
+export default function UploadMaterial({ text = "자료 추가하기", onClick }: Props) {
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [numPages, setNumPages] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -22,7 +22,6 @@ export default function UploadMaterial({ text = "자료 추가하기" }: Props) 
     const file = e.target.files?.[0];
     if (file && file.type === "application/pdf") {
       const url = URL.createObjectURL(file);
-      setPdfFile(file);
       setPdfUrl(url);
       setCurrentPage(1); // 첫 페이지로 초기화
     }
@@ -34,7 +33,6 @@ export default function UploadMaterial({ text = "자료 추가하기" }: Props) 
 
   const handleDelete = () => {
     if (pdfUrl) URL.revokeObjectURL(pdfUrl);
-    setPdfFile(null);
     setPdfUrl(null);
     setNumPages(0);
     setCurrentPage(1);
@@ -53,7 +51,7 @@ export default function UploadMaterial({ text = "자료 추가하기" }: Props) 
     <div style={{ width: "100%" }}>
       {!pdfUrl ? (
         <div
-          onClick={() => document.getElementById("pdfInput")?.click()}
+          onClick={onClick}
           style={{
             width: "100%",
             height: 400,

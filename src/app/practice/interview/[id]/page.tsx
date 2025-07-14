@@ -16,7 +16,6 @@ export default function InterviewPage() {
       fetch(`/api/practices/${id}`)
         .then((res) => res.json())
         .then((data) => {
-          console.log("API 응답 데이터:", data);
           setProject(data.practice);
         });
     }
