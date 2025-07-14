@@ -89,6 +89,7 @@ model Recording {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   videoUrl   String?
   feedback   Json?
+  transcript String?  // Added to store STT transcript
   createdAt  DateTime @default(now())
 
   // Relation to Practice

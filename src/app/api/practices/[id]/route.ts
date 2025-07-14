@@ -52,6 +52,17 @@ export async function GET(
           }
         },
         {
+          // recordings를 createdAt 기준으로 오름차순 정렬
+          $addFields: {
+            recordings: {
+              $sortArray: {
+                input: "$recordings",
+                sortBy: { createdAt: 1 } // 1 for ascending, -1 for descending
+              }
+            }
+          }
+        },
+        {
           $addFields: {
             recordingCount: { $size: '$recordings' },
             lastRecordingDate: {
