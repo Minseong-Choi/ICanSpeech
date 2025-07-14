@@ -41,6 +41,10 @@ yarn-error.log*
 next-env.d.ts
 
 /src/generated/prisma
+
+# Python virtual environment (contains large library files)
 whisper-env/
+
+# User-uploaded media files (can become very large)
 public/videos/*
-!/public/videos/.gitkeepwhisper-env/
+!public/videos/.gitkeep
