@@ -1,4 +1,3 @@
-// app/ocean-messages/page.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -52,9 +51,9 @@ const sampleMessages: Message[] = [
 export default function OceanMessagesPage() {
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
   const [bottles, setBottles] = useState<Message[]>([]);
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
+
   useEffect(() => {
-    // 페이지 로드 시 메시지 병들을 랜덤하게 배치
     setBottles(sampleMessages);
   }, []);
 
@@ -77,15 +76,22 @@ export default function OceanMessagesPage() {
 
   return (
     <div className={styles.container}>
+      {/* 🎬 배경 영상 */}
+      <video
+        className={styles.videoBackground}
+        autoPlay
+        loop
+        muted
+        playsInline
+      >
+        <source src="/videos/ocean.mp4" type="video/mp4" />
+        브라우저가 video 태그를 지원하지 않습니다.
+      </video>
+
       <Header user={session?.user} />
+
       <main className={styles.main}>
         <div className={styles.oceanContainer}>
-          <div className={styles.oceanBackground}>
-            <div className={styles.waves}></div>
-            <div className={styles.waves}></div>
-            <div className={styles.waves}></div>
-          </div>
-          
           <div className={styles.titleSection}>
             <h1 className={styles.title}>🌊 바다에서 온 응원 메시지</h1>
             <p className={styles.subtitle}>
@@ -144,7 +150,6 @@ export default function OceanMessagesPage() {
                   ✕
                 </button>
               </div>
-              
               <div className={styles.messageContent}>
                 <p>{selectedMessage.content}</p>
                 {selectedMessage.author && (
@@ -153,7 +158,6 @@ export default function OceanMessagesPage() {
                   </div>
                 )}
               </div>
-              
               <div className={styles.messageActions}>
                 <button className={styles.likeBtn}>❤️ 좋아요</button>
                 <button className={styles.shareBtn}>📤 공유하기</button>
