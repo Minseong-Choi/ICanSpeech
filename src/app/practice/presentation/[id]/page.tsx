@@ -1,13 +1,27 @@
 "use client";
 
-import React from "react";
-//import { useRouter } from "next/navigation";
-import BackButton from "../../../components/UI/BackButton";
-import CardList from "../../../components/practice/TakeList";
+import React, { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import BackButton from "../../../../components/UI/BackButton";
+import CardList from "../../../../components/practice/TakeList";
 //import FeedbackBox from "../../../components/FeedbackBox";
 
 export default function PresentationPage() {
-  //const router = useRouter();
+  const params = useParams();
+  const { id } = params;
+  const [project, setProject] = useState<{ title: string } | null>(null);
+  
+  useEffect(() => {
+    if (id) {
+      fetch(`/api/practices/${id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("API 응답 데이터:", data);
+          setProject(data.practice);
+        });
+    }
+  }, [id]);
+
   const takes = [1, 2, 3, 4, 5];
 
   const handleUploadClick = () => {
@@ -46,7 +60,7 @@ export default function PresentationPage() {
             margin: 0,
           }}
         >
-          000 프로젝트
+          {project ? project.title : "Loading..."}
         </h1>
         <div style={{ width: 40 }} /> {/* 오른쪽 균형 맞춤 */}
       </div>
