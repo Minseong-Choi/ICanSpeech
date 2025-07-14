@@ -27,7 +27,7 @@ export default function DashboardHeader({ user }: DashboardHeaderProps) {
         {/* 로고 */}
         <div className={styles.logo}>
           <div className={styles.logoIcon}>🎤</div>
-          <h1 className={styles.logoText}>AI캔 스피치</h1>
+          <h1 className={styles.logoText}>아이 캔 스피치</h1>
         </div>
 
         {/* 사용자 섹션 */}

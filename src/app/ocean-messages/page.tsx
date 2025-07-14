@@ -2,6 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react'; 
 import Header from '@/components/Layout/Header';
 import styles from './page.module.css';
 
@@ -51,7 +52,7 @@ const sampleMessages: Message[] = [
 export default function OceanMessagesPage() {
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
   const [bottles, setBottles] = useState<Message[]>([]);
-
+  const { data: session, status } = useSession();
   useEffect(() => {
     // 페이지 로드 시 메시지 병들을 랜덤하게 배치
     setBottles(sampleMessages);
@@ -76,7 +77,7 @@ export default function OceanMessagesPage() {
 
   return (
     <div className={styles.container}>
-      <Header />
+      <Header user={session?.user} />
       <main className={styles.main}>
         <div className={styles.oceanContainer}>
           <div className={styles.oceanBackground}>

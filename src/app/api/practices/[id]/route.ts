@@ -18,7 +18,7 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const {id:_id} = await params; // URL에서 practice ID 추출
+    const _id = params.id; // URL에서 practice ID 추출
 
     if (!_id) {
       return NextResponse.json({ error: 'Practice ID is required' }, { status: 400 });
@@ -37,7 +37,7 @@ export async function GET(
       .aggregate([
         {
           $match: { 
-            _id: new ObjectId(id), // ID로 필터링
+            _id: new ObjectId(_id), // ID로 필터링
             userEmail: session.user.email // 현재 사용자의 이메일로 필터링
           }
         },

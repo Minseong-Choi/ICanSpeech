@@ -17,8 +17,12 @@ export default function BackButton() {
   };
 
   return (
-    <button onClick={handleClick}>
+    <button
+      onClick={handleClick}
+      style={{ border: "none", background: "none", outline: "none" }}
+    >
       <IoMdArrowRoundBack size={35} />
     </button>
+
   );
 }

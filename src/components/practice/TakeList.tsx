@@ -19,7 +19,7 @@ export default function TakeList({ takes, type, onUploadClick }: Props) {
   const { id } = params; // id 추출
 
   const handleCardClick = (takeNumber: number) => {
-    router.push(`/practice/${type}/report?page=${takeNumber}`);
+    router.push(`/practice/${type}/${id}/report?page=${takeNumber}`);
   };
 
   const practiceText =

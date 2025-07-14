@@ -4,13 +4,16 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import BackButton from "../../../../components/UI/BackButton";
 import CardList from "../../../../components/practice/TakeList";
+import { useSession } from 'next-auth/react'; 
+import Header from '@/components/Layout/Header';
 //import FeedbackBox from "../../../components/FeedbackBox";
 
 export default function PresentationPage() {
   const params = useParams();
   const { id } = params;
   const [project, setProject] = useState<{ title: string } | null>(null);
-  
+  const { data: session, status } = useSession();
+
   useEffect(() => {
     if (id) {
       fetch(`/api/practices/${id}`)
@@ -49,7 +52,7 @@ export default function PresentationPage() {
           marginBottom: 8,
         }}
       >
-        <BackButton />
+        <Header user={session?.user} />
         <h1
           style={{
             flex: 1,
