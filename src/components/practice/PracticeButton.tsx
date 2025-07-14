@@ -19,7 +19,7 @@ export default function PracticeButton({ text, route }: PracticeButtonProps) {
     <button
       onClick={handleClick}
       style={{
-        width: 300,
+        width: "100%",
         height: 400,
         display: "flex",
         flexDirection: "column",
