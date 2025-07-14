@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import ScriptReport from "../../../../../components/report/ScriptReport";
 import AIReport from "../../../../../components/report/AIReport";
 
-export default function PresentationReportPage() {
+export default function InterviewReportPage() {
   const searchParams = useSearchParams();
   const recordingId = searchParams.get("recordingId");
   const [videoUrl, setVideoUrl] = useState<string | null>(null);

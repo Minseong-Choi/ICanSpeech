@@ -3,13 +3,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import BackButton from "../../../../components/UI/BackButton";
-import CardList from "../../../../components/practice/TakeList";
+import CardList, { Recording } from "../../../../components/practice/TakeList";
 //import FeedbackBox from "../../../components/FeedbackBox";
 
 export default function InterviewPage() {
   const params = useParams();
   const { id } = params;
-  const [project, setProject] = useState<{ title: string } | null>(null);
+  const [project, setProject] = useState<{ title: string; recordingCount: number; recordings: Recording[] } | null>(null);
 
   useEffect(() => {
     if (id) {
@@ -21,7 +21,7 @@ export default function InterviewPage() {
     }
   }, [id]);
 
-  const takes = [1, 2, 3, 4, 5];
+  const takes = project ? Array.from({ length: project.recordingCount }, (_, i) => i + 1) : [];
 
   const handleUploadClick = () => {
     console.log("면접 자료 업로드하기");
@@ -66,6 +66,7 @@ export default function InterviewPage() {
 
       <CardList
         takes={takes}
+        recordings={project?.recordings || []}
         type="interview"
         onUploadClick={handleUploadClick}
       />

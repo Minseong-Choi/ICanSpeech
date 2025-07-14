@@ -7,19 +7,26 @@ import { useRouter } from "next/navigation";
 
 import { useParams } from "next/navigation"; // useParams 추가
 
+export type Recording = {
+  _id: string;
+  createdAt: string;
+  // 다른 필드들...
+};
+
 type Props = {
   takes: number[];
+  recordings: Recording[];
   type: "presentation" | "interview";
   onUploadClick: () => void;
 };
 
-export default function TakeList({ takes, type, onUploadClick }: Props) {
+export default function TakeList({ takes, recordings, type, onUploadClick }: Props) {
   const router = useRouter();
   const params = useParams(); // useParams 사용
   const { id } = params; // id 추출
 
-  const handleCardClick = (takeNumber: number) => {
-    router.push(`/practice/${type}/report?page=${takeNumber}`);
+  const handleCardClick = (recordingId: string) => {
+    router.push(`/practice/${type}/${id}/report?recordingId=${recordingId}`);
   };
 
   const practiceText =
@@ -28,7 +35,7 @@ export default function TakeList({ takes, type, onUploadClick }: Props) {
     type === "presentation"
       ? "발표 영상 업로드하기"
       : "면접 영상 업로드하기";
-  
+
   // recordRoute를 동적으로 구성
   const recordRoute = `/practice/${type}/${id}/record`;
 
@@ -70,13 +77,17 @@ export default function TakeList({ takes, type, onUploadClick }: Props) {
         {takes
           .slice()
           .reverse()
-          .map((takeNumber) => (
-            <TakeCard
-              key={takeNumber}
-              index={takeNumber}
-              onClick={() => handleCardClick(takeNumber)} // 👈 클릭 핸들러 전달
-            />
-          ))}
+          .map((take, index) => {
+            const recording = recordings[index];
+            return (
+              <TakeCard
+                key={recording?._id || index}
+                index={take}
+                date={recording?.createdAt}
+                onClick={() => handleCardClick(recording?._id)}
+              />
+            );
+          })}
       </div>
     </div>
   );

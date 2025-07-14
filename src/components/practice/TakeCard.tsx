@@ -6,6 +6,16 @@ interface TakeCardProps {
   onClick?: () => void;    // 클릭 시 이동
 }
 
+const formatDate = (dateString?: string) => {
+  if (!dateString) return "날짜 정보 없음";
+  const date = new Date(dateString);
+  return date.toLocaleDateString("ko-KR", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+};
+
 export default function TakeCard({ index, date, onClick }: TakeCardProps) {
   return (
     <div
@@ -38,7 +48,7 @@ export default function TakeCard({ index, date, onClick }: TakeCardProps) {
         {index}번째 연습
       </h3>
       <p style={{ fontSize: "13px", color: "#666" }}>
-        {date || "날짜 정보 없음"}
+        {formatDate(date)}
       </p>
     </div>
   );

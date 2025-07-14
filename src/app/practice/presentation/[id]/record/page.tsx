@@ -95,10 +95,31 @@ export default function PresentationRecordPage() {
     }
 
     const blob = await fetch(previewUrl).then((res) => res.blob());
-    const url = URL.createObjectURL(blob);
+    const videoFile = new File([blob], "recorded-video.webm", { type: "video/webm" });
 
-    // 👉 서버 대신 임시 리포트 페이지로 이동 (takeId 대신 temp 사용)
-    router.push(`/practice/presentation/${projectId}/report?id=temp&video=${encodeURIComponent(url)}`);
+    const formData = new FormData();
+    formData.append("projectId", projectId as string);
+    formData.append("video", videoFile);
+
+    try {
+      const response = await fetch("/api/recordings", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        alert("녹화 영상이 성공적으로 저장되었습니다!");
+        // 실제 리포트 페이지로 이동 (저장된 recordingId 사용)
+        router.push(`/practice/presentation/${projectId}/report?recordingId=${data.recordingId}`);
+      } else {
+        const errorData = await response.json();
+        alert(`영상 저장 실패: ${errorData.error}`);
+      }
+    } catch (error) {
+      console.error("Failed to save recording:", error);
+      alert("영상 저장 중 오류가 발생했습니다.");
+    }
   };
 
   return (
