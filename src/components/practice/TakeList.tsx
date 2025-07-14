@@ -1,41 +1,67 @@
 "use client";
 
 import PracticeButton from "./PracticeButton";
-import UploadMaterial from "./UploadMaterial";
+import UploadRecord from "./UploadRecord";
 import TakeCard from "./TakeCard";
+import { useRouter } from "next/navigation";
 
 type Props = {
-  takes: number[]; // 예: [1, 2, 3]
-  type: 'interview' | 'presentation';
-  onUploadClick?: () => void;
+  takes: number[];
 };
 
-export default function CardList({ takes, type, onUploadClick }: Props) {
-  const recordRoute = `./${type}/record`;
+export default function TakeList({ takes }: Props) {
+  const router = useRouter();
+
+  const handleCardClick = (takeNumber: number) => {
+    router.push(`/practice/presentation/report?page=${takeNumber}`);
+  };
 
   return (
     <div
       style={{
         display: "flex",
         flexDirection: "row",
-        gap: 20,
+        width: "100%",
+        justifyContent: "space-between",
         alignItems: "flex-start",
         marginTop: 20,
-        overflowX: "auto",
-        paddingBottom: 8,
       }}
     >
-      <PracticeButton text="발표 연습하기" route={recordRoute} />
-      <UploadMaterial text="발표 자료 업로드하기" onClick={onUploadClick} />
+      {/* 왼쪽: 버튼 2개 */}
+      <div
+        style={{
+          width: "46%",
+          display: "flex",
+          flexDirection: "row",
+          gap: 16,
+        }}
+      >
+        <PracticeButton text="발표 연습하기" route="./presentation/record" />
+        <UploadRecord text="발표 영상 업로드하기" />
+      </div>
 
-      {takes
-        .slice()
-        .reverse()
-        .map((takeNumber, i) => (
-          <div key={takeNumber} style={{ marginLeft: i === 0 ? 50 : 0 }}>
-            <TakeCard index={takeNumber} />
-          </div>
-        ))}
+      {/* 오른쪽: 테이크 카드들 */}
+      <div
+        style={{
+          width: "46%",
+          display: "flex",
+          flexDirection: "row",
+          gap: 16,
+          overflowX: "auto",
+          paddingBottom: 8,
+        }}
+      >
+        {takes
+          .slice()
+          .reverse()
+          .map((takeNumber) => (
+            <TakeCard
+              key={takeNumber}
+              index={takeNumber}
+              onClick={() => handleCardClick(takeNumber)} // 👈 클릭 핸들러 전달
+            />
+          ))}
+      </div>
     </div>
   );
 }
