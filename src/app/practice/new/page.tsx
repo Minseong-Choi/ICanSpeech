@@ -17,6 +17,7 @@ export default function NewPracticePage() {
     materials: ''
   });
   const [loading, setLoading] = useState(false);
+  // Removed projectCreated state as BackButton now handles logic based on URL params
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,8 +48,8 @@ export default function NewPracticePage() {
 
       if (response.ok) {
         const data = await response.json();
-        // 생성된 프로젝트의 연습 페이지로 이동
-        router.push(`/practice/${formData.type}?practiceId=${data.practice._id}`);
+        // 생성된 프로젝트의 연습 페이지로 이동, 'from=new' 쿼리 파라미터 추가
+        router.push(`/practice/${formData.type}?practiceId=${data.practice._id}&from=new`);
       } else {
         alert('프로젝트 생성에 실패했습니다.');
       }
@@ -62,6 +63,7 @@ export default function NewPracticePage() {
 
   return (
     <div className={styles.container}>
+      {/* BackButton now handles navigation logic based on URL params */}
       <BackButton />
       
       <div className={styles.content}>

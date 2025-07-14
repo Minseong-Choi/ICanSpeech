@@ -40,7 +40,7 @@ export default function SpeechPracticeCard() {
   };
 
   const handlePracticeClick = (practiceId: string, type:string) => {
-    router.push(`/practice/${type}?practiceId=${practiceId}`);
+    router.push(`/practice/${type}/${practiceId}`);
   };
 
   const handleDelete = async (e: React.MouseEvent, practiceId: string) => {
