@@ -6,29 +6,28 @@ import { useRouter } from "next/navigation";
 
 type Props = {
   text?: string;
+  type: "presentation" | "interview";
+  onClick: () => void;
 };
 
-export default function UploadRecord({ text = "발표 영상 업로드하기" }: Props) {
+export default function UploadRecord({ text = "발표 영상 업로드하기", type, onClick }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
-  const handleClick = () => {
-    inputRef.current?.click();
-  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const url = URL.createObjectURL(file);
       // 예: temp id로 리포트로 이동
-      router.push(`/practice/presentation/report/temp?video=${encodeURIComponent(url)}`);
+      router.push(`/practice/${type}/report/temp?video=${encodeURIComponent(url)}`);
     }
   };
 
   return (
     <>
       <div
-        onClick={handleClick}
+        onClick={onClick}
         style={{
           border: "1px dashed #aaa",
           borderRadius: 12,

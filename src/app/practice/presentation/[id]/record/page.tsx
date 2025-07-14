@@ -1,16 +1,16 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
-import BackButton from "../../../../components/UI/BackButton";
-import WebcamView from "../../../../components/practice/WebcamView";
-import ScriptView from "../../../../components/practice/ScriptView";
-import UploadMaterial from "../../../../components/practice/UploadMaterial";
+import { useParams, useRouter } from "next/navigation"; // useSearchParams 대신 useParams 사용
+import BackButton from "../../../../../components/UI/BackButton"; // 경로 수정
+import WebcamView from "../../../../../components/practice/WebcamView"; // 경로 수정
+import ScriptView from "../../../../../components/practice/ScriptView"; // 경로 수정
+import UploadMaterial from "../../../../../components/practice/UploadMaterial"; // 경로 수정
 
 export default function PresentationRecordPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const projectId = searchParams.get("projectId");
+  const params = useParams(); // useParams 사용
+  const { id: projectId } = params; // id를 projectId로 구조 분해 할당
 
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [isRecording, setIsRecording] = useState(false);
@@ -27,7 +27,7 @@ export default function PresentationRecordPage() {
       try {
         activeStream = await navigator.mediaDevices.getUserMedia({ video: false, audio: true });
         setStream(activeStream);
-      } catch (err) {
+      } catch (_err) {
         alert("오디오 장치를 사용할 수 없습니다.");
         return;
       }
@@ -72,7 +72,7 @@ export default function PresentationRecordPage() {
       try {
         const newStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
         setStream(newStream);
-      } catch (err) {
+      } catch (_err) {
         alert("내장 카메라 또는 마이크 접근에 실패했습니다.");
         setIsCameraOn(false);
       }
@@ -89,7 +89,7 @@ export default function PresentationRecordPage() {
     const url = URL.createObjectURL(blob);
 
     // 👉 서버 대신 임시 리포트 페이지로 이동 (takeId 대신 temp 사용)
-    router.push(`/practice/presentation/report?id=temp&video=${encodeURIComponent(url)}`);
+    router.push(`/practice/presentation/${projectId}/report?id=temp&video=${encodeURIComponent(url)}`);
   };
 
   return (

@@ -5,16 +5,32 @@ import UploadRecord from "./UploadRecord";
 import TakeCard from "./TakeCard";
 import { useRouter } from "next/navigation";
 
+import { useParams } from "next/navigation"; // useParams 추가
+
 type Props = {
   takes: number[];
+  type: "presentation" | "interview";
+  onUploadClick: () => void;
 };
 
-export default function TakeList({ takes }: Props) {
+export default function TakeList({ takes, type, onUploadClick }: Props) {
   const router = useRouter();
+  const params = useParams(); // useParams 사용
+  const { id } = params; // id 추출
 
   const handleCardClick = (takeNumber: number) => {
-    router.push(`/practice/presentation/report?page=${takeNumber}`);
+    router.push(`/practice/${type}/report?page=${takeNumber}`);
   };
+
+  const practiceText =
+    type === "presentation" ? "발표 연습하기" : "면접 연습하기";
+  const uploadText =
+    type === "presentation"
+      ? "발표 영상 업로드하기"
+      : "면접 영상 업로드하기";
+  
+  // recordRoute를 동적으로 구성
+  const recordRoute = `/practice/${type}/${id}/record`;
 
   return (
     <div
@@ -36,8 +52,8 @@ export default function TakeList({ takes }: Props) {
           gap: 16,
         }}
       >
-        <PracticeButton text="발표 연습하기" route="./presentation/record" />
-        <UploadRecord text="발표 영상 업로드하기" />
+        <PracticeButton text={practiceText} route={recordRoute} />
+        <UploadRecord text={uploadText} type={type} onClick={onUploadClick} />
       </div>
 
       {/* 오른쪽: 테이크 카드들 */}
