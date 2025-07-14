@@ -89,7 +89,7 @@ export default function InterviewRecordPage() { // 컴포넌트 이름 변경
     const url = URL.createObjectURL(blob);
 
     // 👉 서버 대신 임시 리포트 페이지로 이동 (takeId 대신 temp 사용)
-    router.push(`/practice/interview/${projectId}/report?id=temp&video=${encodeURIComponent(url)}`);
+    router.push(`/practice/presentation/report?page=5`);
   };
 
   return (
