@@ -1,16 +1,16 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { useParams, useRouter } from "next/navigation"; // useSearchParams 대신 useParams 사용
-import BackButton from "../../../../../components/UI/BackButton"; // 경로 수정
-import WebcamView from "../../../../../components/practice/WebcamView"; // 경로 수정
-import ScriptView from "../../../../../components/practice/ScriptView"; // 경로 수정
-import UploadMaterial from "../../../../../components/practice/UploadMaterial"; // 경로 수정
+import { useParams, useRouter } from "next/navigation";
+import BackButton from "../../../../../components/UI/BackButton";
+import WebcamView from "../../../../../components/practice/WebcamView";
+import ScriptView from "../../../../../components/practice/ScriptView";
+import UploadMaterial from "../../../../../components/practice/UploadMaterial";
 
 export default function PresentationRecordPage() {
   const router = useRouter();
-  const params = useParams(); // useParams 사용
-  const { id: projectId } = params; // id를 projectId로 구조 분해 할당
+  const params = useParams();
+  const { id: projectId } = params;
 
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [isRecording, setIsRecording] = useState(false);
@@ -25,7 +25,10 @@ export default function PresentationRecordPage() {
 
     if (!activeStream) {
       try {
-        activeStream = await navigator.mediaDevices.getUserMedia({ video: false, audio: true });
+        activeStream = isCameraOn
+          ? await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+          : await navigator.mediaDevices.getUserMedia({ audio: true });
+
         setStream(activeStream);
       } catch {
         alert("오디오 장치를 사용할 수 없습니다.");
@@ -51,6 +54,7 @@ export default function PresentationRecordPage() {
         const blob = new Blob(recordedChunksRef.current, { type: "video/webm" });
         const url = URL.createObjectURL(blob);
         setPreviewUrl(url);
+        setStream(null);
       };
 
       mediaRecorderRef.current = mediaRecorder;
@@ -79,17 +83,26 @@ export default function PresentationRecordPage() {
     }
   };
 
+  const handleRetake = () => {
+    setPreviewUrl(null);
+    setIsCameraOn(true);
+  };
+
   const handleSave = async () => {
     if (!previewUrl || !projectId) {
       alert("projectId가 없거나 녹화 영상이 없습니다.");
       return;
     }
 
-    const blob = await fetch(previewUrl).then((res) => res.blob());
-    const url = URL.createObjectURL(blob);
+    //const blob = await fetch(previewUrl).then((res) => res.blob());
 
-    // 👉 서버 대신 임시 리포트 페이지로 이동 (takeId 대신 temp 사용)
-    router.push(`/practice/presentation/${projectId}/report?id=temp&video=${encodeURIComponent(url)}`);
+    // TODO: 백엔드 업로드 연동 예정
+    // const formData = new FormData();
+    // formData.append("video", blob, "recording.webm");
+    // formData.append("projectId", projectId as string);
+    // await fetch("/api/upload", { method: "POST", body: formData });
+
+    router.push(`/practice/presentation/report?page=5`);
   };
 
   return (
@@ -108,11 +121,22 @@ export default function PresentationRecordPage() {
         <BackButton />
       </div>
 
-      {/* 본문: 왼쪽 (웹캠 + 버튼) / 오른쪽 (스크립트) */}
+      {/* 본문: 왼쪽 (녹화 + 영상) / 오른쪽 (자료) */}
       <div style={{ display: "flex", gap: 24, flex: 1 }}>
-        {/* 왼쪽: 웹캠 + 버튼 */}
         <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 16 }}>
-          {isCameraOn ? (
+          {/* 화면 표시 */}
+          {previewUrl ? (
+            <video
+              src={previewUrl}
+              controls
+              style={{
+                width: "100%",
+                height: 400,
+                borderRadius: 8,
+                backgroundColor: "#000",
+              }}
+            />
+          ) : isCameraOn ? (
             <WebcamView onStreamReady={setStream} />
           ) : (
             <div
@@ -125,73 +149,79 @@ export default function PresentationRecordPage() {
             />
           )}
 
-          {/* 카메라 토글 버튼 */}
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <button
-              onClick={toggleCamera}
-              style={{
-                backgroundColor: isCameraOn ? "#4caf50" : "#999",
-                color: "#fff",
-                fontWeight: "bold",
-                border: "none",
-                borderRadius: 6,
-                padding: "6px 12px",
-                cursor: "pointer",
-              }}
-            >
-              {isCameraOn ? "카메라 끄기" : "카메라 켜기"}
-            </button>
-          </div>
-
-          {/* 녹화 버튼 */}
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <button
-              onClick={handleRecordClick}
-              style={{
-                padding: "12px 24px",
-                fontSize: 16,
-                fontWeight: "bold",
-                backgroundColor: isRecording ? "#555" : "#e63946",
-                color: "#fff",
-                border: "none",
-                borderRadius: 8,
-                cursor: "pointer",
-              }}
-            >
-              {isRecording ? "■ 녹화 중지" : "⏺ 녹화 시작"}
-            </button>
-          </div>
-
-          {/* 미리보기 영상 + 저장 버튼 */}
-          {previewUrl && (
-            <div style={{ marginTop: 16 }}>
-              <h3 style={{ fontSize: 16, fontWeight: "bold", marginBottom: 8 }}>녹화된 영상</h3>
-              <video
-                src={previewUrl}
-                controls
-                style={{
-                  width: "100%",
-                  borderRadius: 8,
-                  backgroundColor: "#000",
-                }}
-              />
+          {/* 카메라 ON/OFF 버튼 (녹화 완료 후에는 숨김) */}
+          {!previewUrl && (
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
               <button
-                onClick={handleSave}
+                onClick={toggleCamera}
+                disabled={isRecording}
                 style={{
-                  marginTop: 12,
-                  backgroundColor: "#225AB4",
+                  backgroundColor: isCameraOn ? "#4caf50" : "#999",
                   color: "#fff",
                   fontWeight: "bold",
-                  padding: "10px 16px",
                   border: "none",
                   borderRadius: 6,
-                  cursor: "pointer",
+                  padding: "6px 12px",
+                  cursor: isRecording ? "not-allowed" : "pointer",
+                  opacity: isRecording ? 0.5 : 1,
                 }}
               >
-                저장 후 분석하기 →
+                {isCameraOn ? "카메라 끄기" : "카메라 켜기"}
               </button>
             </div>
           )}
+
+          {/* 하단 버튼: 녹화 / 다시 찍기 / 저장 */}
+          <div style={{ display: "flex", justifyContent: previewUrl ? "space-between" : "center", gap: 12 }}>
+            {previewUrl ? (
+              <>
+                <button
+                  onClick={handleRetake}
+                  style={{
+                    backgroundColor: "#999",
+                    color: "#fff",
+                    fontWeight: "bold",
+                    border: "none",
+                    borderRadius: 6,
+                    padding: "10px 16px",
+                    cursor: "pointer",
+                  }}
+                >
+                  ↺ 다시 찍기
+                </button>
+                <button
+                  onClick={handleSave}
+                  style={{
+                    backgroundColor: "#225AB4",
+                    color: "#fff",
+                    fontWeight: "bold",
+                    border: "none",
+                    borderRadius: 6,
+                    padding: "10px 16px",
+                    cursor: "pointer",
+                  }}
+                >
+                  저장 후 분석하기 →
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={handleRecordClick}
+                style={{
+                  padding: "12px 24px",
+                  fontSize: 16,
+                  fontWeight: "bold",
+                  backgroundColor: isRecording ? "#555" : "#e63946",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: 8,
+                  cursor: "pointer",
+                }}
+              >
+                {isRecording ? "■ 녹화 중지" : "⏺ 녹화 시작"}
+              </button>
+            )}
+          </div>
         </div>
 
         {/* 오른쪽: 자료 업로드 + 스크립트 */}
