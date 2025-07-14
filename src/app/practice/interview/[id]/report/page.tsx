@@ -1,5 +1,5 @@
-import ScriptReport from "../../../../components/report/ScriptReport";
-import AIReport from "../../../../components/report/AIReport";
+import ScriptReport from "../../../../../components/report/ScriptReport";
+import AIReport from "../../../../../components/report/AIReport";
 
 export default function ReportPage({ params }: { params: { id: string } }) {
   const videoUrl = "/videos/sample.webm"; // 추후 props로 전달

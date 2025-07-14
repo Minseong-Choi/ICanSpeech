@@ -18,9 +18,9 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const id = params.id; // URL에서 practice ID 추출
+    const {id:_id} = await params; // URL에서 practice ID 추출
 
-    if (!id) {
+    if (!_id) {
       return NextResponse.json({ error: 'Practice ID is required' }, { status: 400 });
     }
 
