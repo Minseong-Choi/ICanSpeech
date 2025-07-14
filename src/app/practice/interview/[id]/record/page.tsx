@@ -27,7 +27,7 @@ export default function InterviewRecordPage() { // 컴포넌트 이름 변경
       try {
         activeStream = await navigator.mediaDevices.getUserMedia({ video: false, audio: true });
         setStream(activeStream);
-      } catch (_err) {
+      } catch {
         alert("오디오 장치를 사용할 수 없습니다.");
         return;
       }
@@ -72,7 +72,7 @@ export default function InterviewRecordPage() { // 컴포넌트 이름 변경
       try {
         const newStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
         setStream(newStream);
-      } catch (_err) {
+      } catch {
         alert("내장 카메라 또는 마이크 접근에 실패했습니다.");
         setIsCameraOn(false);
       }

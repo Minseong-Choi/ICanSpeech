@@ -9,6 +9,7 @@ export default function ReportPage({ params }: { params: { id: string } }) {
     "눈을 자주 아래로 내립니다.",
     "핵심 키워드 'AI'가 3번 빠졌습니다.",
   ];
+  console.log("ReportPage params:", params);
 
   return (
     <div style={{ display: "flex", gap: 24, padding: 24 }}>
