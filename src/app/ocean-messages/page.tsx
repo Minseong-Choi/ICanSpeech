@@ -88,7 +88,7 @@ export default function OceanMessagesPage() {
         브라우저가 video 태그를 지원하지 않습니다.
       </video>
 
-      <Header user={session?.user} />
+      <Header user={session?.user ?? null} />
 
       <main className={styles.main}>
         <div className={styles.oceanContainer}>

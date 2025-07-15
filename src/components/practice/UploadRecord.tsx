@@ -31,7 +31,7 @@ export default function UploadRecord({ text = "발표 영상 업로드하기", t
         style={{
           border: "1px dashed #aaa",
           borderRadius: 12,
-          width: "100%",
+          width: "50%",
           height: 400,
           display: "flex",
           flexDirection: "column",

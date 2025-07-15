@@ -23,7 +23,7 @@ export default function TakeCard({ index, date, onClick }: TakeCardProps) {
       style={{
         border: "1px solid #ddd",
         borderRadius: "12px",
-        width: 150,
+        width: "100%",
         height: 400,
         backgroundColor: "#fff",
         cursor: onClick ? "pointer" : "default",

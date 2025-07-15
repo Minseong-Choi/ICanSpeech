@@ -53,7 +53,7 @@ export default function TakeList({ takes, recordings, type, onUploadClick }: Pro
       {/* 왼쪽: 버튼 2개 */}
       <div
         style={{
-          width: "46%",
+          width: "30%",
           display: "flex",
           flexDirection: "row",
           gap: 16,
@@ -66,7 +66,7 @@ export default function TakeList({ takes, recordings, type, onUploadClick }: Pro
       {/* 오른쪽: 테이크 카드들 */}
       <div
         style={{
-          width: "46%",
+          width: "65%",
           display: "flex",
           flexDirection: "row",
           gap: 16,
