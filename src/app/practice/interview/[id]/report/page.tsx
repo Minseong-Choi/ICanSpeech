@@ -22,17 +22,46 @@ export default function InterviewReportPage() {
         .then((data) => {
           if (data.recording) {
             setVideoUrl(data.recording.videoUrl);
-            setTranscript(data.recording.transcript || "텍스트 변환에 실패했습니다.");
-            // TODO: 실제 feedback 데이터 설정
-            setFeedback([
-              "말 속도는 적절합니다.",
-              "눈을 자주 아래로 내립니다.",
-              "핵심 키워드 'AI'가 3번 빠졌습니다.",
-            ]);
+            const fetchedTranscript = data.recording.transcript || "텍스트 변환에 실패했습니다.";
+            setTranscript(fetchedTranscript);
+
+            // Call server-side API for feedback if transcript is available and not an error message
+            if (fetchedTranscript && !fetchedTranscript.includes("실패했습니다")) {
+              fetch("/api/gemini-feedback", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ transcript: fetchedTranscript }),
+              })
+                .then((response) => {
+                  if (!response.ok) {
+                    console.error(`API request failed with status ${response.status}`);
+                    return response.text().then((text) => {
+                      throw new Error(`API error: Status ${response.status}, Body: ${text}`);
+                    });
+                  }
+                  return response.json();
+                })
+                .then((data) => {
+                  if (data.feedback) {
+                    setFeedback(data.feedback.split('\n').filter(Boolean));
+                  } else {
+                    console.error("Unexpected API response structure:", data);
+                    setFeedback(["피드백을 가져오는 데 실패했습니다. 응답 형식이 예상과 다릅니다."]);
+                  }
+                })
+                .catch((error) => {
+                  console.error("Error calling feedback API:", error);
+                  setFeedback([`피드백 API 호출 중 오류가 발생했습니다: ${error.message}`]);
+                });
+            } else {
+              setFeedback(["STT 텍스트를 가져올 수 없거나 오류가 발생했습니다."]);
+            }
           }
         });
     }
-  }, [recordingId]);
+  }, [recordingId, transcript]); 
 
   if (!videoUrl) {
     return <div>로딩 중...</div>;

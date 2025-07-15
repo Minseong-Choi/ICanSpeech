@@ -18,7 +18,7 @@ export default function AIReport({ feedback }: Props) {
       <h3 style={{ marginBottom: 16 }}>🧠 AI 분석 결과</h3>
       <ul style={{ lineHeight: 1.6 }}>
         {feedback.map((item, idx) => (
-          <li key={idx}>• {item}</li>
+          <div key={idx}> {item}</div>
         ))}
       </ul>
     </div>
