@@ -1,6 +1,7 @@
 
 .welcomeSection {
   text-align: center;
+  margin-top: 4rem;
   margin-bottom: 3rem;
   animation: fadeIn 0.6s ease-out;
 }

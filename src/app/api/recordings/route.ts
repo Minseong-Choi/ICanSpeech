@@ -70,7 +70,7 @@ export async function POST(request: Request) {
     try {
       // 2️⃣ Whisper Python 스크립트 실행 (가상 환경 사용)
       //const pythonExecutable = path.join(process.cwd(), 'whisper-env/bin/python');
-      const pythonExecutable = path.join(process.cwd(), 'whisper-env', 'Scripts', 'python.exe');
+      const pythonExecutable = path.join(process.cwd(), 'whisper-env', 'bin', 'python');
       const whisperScript = path.join(process.cwd(), 'whisper_stt.py');
       const { stdout } = await execPromise(`"${pythonExecutable}" "${whisperScript}" "${audioPath}"`,{encoding: 'utf8'});
       

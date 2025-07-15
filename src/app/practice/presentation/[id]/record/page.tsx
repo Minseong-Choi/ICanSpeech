@@ -2,8 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import WebcamView from "../../../../../components/practice/WebcamView"; 
-import ScriptView from "../../../../../components/practice/ScriptView"; 
+import WebcamView from "../../../../../components/practice/WebcamView";
 import UploadMaterial from "../../../../../components/practice/UploadMaterial"; 
 import Header from '@/components/Layout/Header';
 import { useSession } from 'next-auth/react';

@@ -6,7 +6,7 @@ interface DashboardCardProps {
   children: React.ReactNode;
   className?: string;
   href?: string;
-  color?: 'blue' | 'pink' | 'green' | 'yellow';
+  color?: string;
   onClick?: () => void;
 }
 
