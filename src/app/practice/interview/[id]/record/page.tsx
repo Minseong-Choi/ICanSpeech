@@ -2,12 +2,15 @@
 
 import { useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation"; // useSearchParams 대신 useParams 사용
-import BackButton from "../../../../../components/UI/BackButton"; // 경로 수정
 import WebcamView from "../../../../../components/practice/WebcamView"; // 경로 수정
 import ScriptView from "../../../../../components/practice/ScriptView"; // 경로 수정
 import UploadMaterial from "../../../../../components/practice/UploadMaterial"; // 경로 수정
+import { useSession } from 'next-auth/react';
+import Header from '@/components/Layout/Header';
 
 export default function InterviewRecordPage() { // 컴포넌트 이름 변경
+  const { data: session } = useSession();
+
   const router = useRouter();
   const params = useParams(); // useParams 사용
   const { id: projectId } = params; // id를 projectId로 구조 분해 할당
@@ -124,18 +127,19 @@ export default function InterviewRecordPage() { // 컴포넌트 이름 변경
   return (
     <div
       style={{
-        padding: 24,
+        paddingTop: 80,
+        paddingLeft: 24,
+        paddingRight: 24,
+        paddingBottom: 24,
         display: "flex",
         flexDirection: "column",
         gap: 24,
-        backgroundColor: "#f5f5f5",
+        backgroundColor: "#f9f9f9",
         minHeight: "100vh",
       }}
     >
-      {/* 상단: 뒤로가기 */}
-      <div style={{ display: "flex", justifyContent: "flex-start" }}>
-        <BackButton />
-      </div>
+
+      <Header user={session?.user ?? null} />
 
       {/* 본문: 왼쪽 (웹캠 + 버튼) / 오른쪽 (스크립트) */}
       <div style={{ display: "flex", gap: 24, flex: 1 }}>

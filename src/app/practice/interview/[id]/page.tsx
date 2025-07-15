@@ -2,14 +2,16 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import BackButton from "../../../../components/UI/BackButton";
 import CardList, { Recording } from "../../../../components/practice/TakeList";
 //import FeedbackBox from "../../../components/FeedbackBox";
+import Header from '@/components/Layout/Header';
+import { useSession } from 'next-auth/react';
 
 export default function InterviewPage() {
   const params = useParams();
   const { id } = params;
   const [project, setProject] = useState<{ title: string; recordingCount: number; recordings: Recording[] } | null>(null);
+  const { data: session } = useSession();
 
   useEffect(() => {
     if (id) {
@@ -31,33 +33,35 @@ export default function InterviewPage() {
   return (
     <div
       style={{
+        backgroundColor: "#f4f6fa",
         padding: 24,
+        minHeight: "100vh",
+        fontFamily: "sans-serif",
         display: "flex",
         flexDirection: "column",
         gap: 24,
-        backgroundColor: "#f9f9f9",
-        minHeight: "100vh",
       }}
     >
-    <div
-    style={{
-        position: "relative",
-        height: 40,
-        marginBottom: 16,
-    }}
-    >
-    {/* 왼쪽 BackButton */}
-    <div style={{ position: "absolute", left: 0, top: 0 }}>
-        <BackButton />
-    </div>
+      {/* 헤더: 뒤로가기 + 제목 */}
+      <div
+        style={{
+          paddingTop: 80, 
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: 8,
+        }}
+      >
+    <Header user={session?.user ?? null} />
 
     {/* 가운데 제목 */}
     <h1
         style={{
-        textAlign: "center",
-        fontSize: 30,
-        fontWeight: "bold",
-        margin: 0,
+          flex: 1,
+          textAlign: "center",
+          fontSize: 30,
+          fontWeight: "bold",
+          margin: 0,
         }}
         >
         {project ? project.title : "Loading..."}
