@@ -3,7 +3,7 @@
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useRef } from 'react';
-import Header from '@/components/Layout/Header';
+import DashboardHeader from '@/components/Dashboard/DashboardHeader';
 import WelcomeSection from '@/components/Dashboard/WelcomeSection';
 import DashboardGrid from '@/components/Dashboard/DashboardGrid';
 //import LoadingSpinner from '@/components/UI/LoadingSpinner';
@@ -83,7 +83,7 @@ export default function DashboardPage() {
 
   return (
     <div className={styles.container}>
-      <Header user={session.user} />
+      <DashboardHeader user={session.user} />
       
       {/* 배경 패턴 */}
       <div className={styles.backgroundPattern}></div>

@@ -1,46 +1,64 @@
 'use client';
 
+import Link from 'next/link';
+import styles from './DashboardHeader.module.css';
 import { signOut } from 'next-auth/react';
 import { User } from 'next-auth';
-import styles from './DashboardHeader.module.css';
 import Image from 'next/image';
 
-interface DashboardHeaderProps {
-  user: User;
+interface HeaderProps {
+  user: User | null;
 }
 
-export default function DashboardHeader({ user }: DashboardHeaderProps) {
+export default function DashboardHeader( {user} : HeaderProps ) {
   const handleLogout = async () => {
-    await signOut({ 
+    await signOut({
       callbackUrl: '/login',
-      redirect: true 
+      redirect: true
     });
   };
 
-  // 사용자 이름 표시용
   const displayName = user?.name || '사용자';
   const userInitial = displayName.charAt(0).toUpperCase();
 
+
   return (
     <header className={styles.header}>
-      <div className={styles.headerContent}>
-        {/* 로고 */}
-        <div className={styles.logo}>
-          <div className={styles.logoIcon}>🎤</div>
-          <h1 className={styles.logoText}>아이캔 스피치</h1>
+      
+      <div className={styles.container}>
+        <div className={styles.leftGroup}>
+          <Link href="/dashboard" className={styles.logo} style={{ position: "absolute", left: 130 }}>
+            <div className={styles.logoIcon}>🎤</div>
+            <h1 className={styles.logoText}>아이캔 스피치</h1>
+          </Link>
         </div>
+        {/* <Link href="/dashboard" className={styles.logo}>
+          <div className={styles.logoIcon}>🎤</div>
+          <h1 className={styles.logoText} >아이 캔 스피치</h1>
+        </Link> */}
 
-        {/* 사용자 섹션 */}
-        <div className={styles.userSection}>
+        <nav className={styles.navigation}>
+          <Link href="/dashboard" className={styles.navLink}>
+            대시보드
+          </Link>
+          <Link href="/mypage" className={styles.navLink}>
+            마이페이지
+          </Link> 
+          <Link href="/ocean-messages" className={styles.navLink}>
+            응원메시지
+          </Link>
+        </nav>
+
+        <div className={styles.userSection} style={{ position: "absolute", right: 100 }}>
           <div className={styles.userProfile}>
             {user?.image ? (
               <Image
-              src={user.image}              // 외부 URL 혹은 /public 폴더 경로
+              src={user.image}
               alt={displayName}
-              width={48}                    // 본인의 디자인에 맞는 너비
-              height={48}                   // 본인의 디자인에 맞는 높이
+              width={48}
+              height={48}
               className={styles.userAvatar}
-              priority                      // LCP 이미지는 priority 옵션으로 즉시 로드 가능
+              priority
             />
             ) : (
               <div className={styles.userAvatar}>
