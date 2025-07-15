@@ -201,34 +201,103 @@ export default function OceanMessagesPage() {
         )}
 
         {isWriting && (
-          <div className={styles.messageModal} onClick={() => setIsWriting(false)}>
-            <div className={styles.messageCard} onClick={(e) => e.stopPropagation()}>
-              <h3>📝 새로운 메시지 작성</h3>
-              <textarea
-                placeholder="응원 메시지를 입력해 주세요"
-                value={newContent}
-                onChange={(e) => setNewContent(e.target.value)}
-                className={styles.textarea}
-              />
-              <input
-                type="text"
-                placeholder="작성자 이름 (선택)"
-                value={newAuthor}
-                onChange={(e) => setNewAuthor(e.target.value)}
-                className={styles.input}
-              />
-              <select
-                value={newType}
-                onChange={(e) => setNewType(e.target.value as Message["type"])}
-                className={styles.select}
-              >
-                <option value="encouragement">응원 메시지 💌</option>
-                <option value="tip">스피치 팁 💡</option>
-                <option value="quote">명언 📜</option>
-              </select>
-              <div className={styles.messageActions}>
-                <button onClick={addNewMessage} className={styles.likeBtn}>저장하기</button>
-                <button onClick={() => setIsWriting(false)} className={styles.shareBtn}>취소</button>
+          <div className={styles.newMessageModal} onClick={() => setIsWriting(false)}>
+            <div className={styles.newMessageCard} onClick={(e) => e.stopPropagation()}>
+              {/* 헤더 */}
+              <div className={styles.modalHeader}>
+                <div className={styles.headerContent}>
+                  <div className={styles.headerIcon}>✍️</div>
+                  <div>
+                    <h3 className={styles.modalTitle}>새로운 메시지 작성</h3>
+                    <p className={styles.modalSubtitle}>여러분의 따뜻한 응원을 나눠주세요</p>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => setIsWriting(false)} 
+                  className={styles.closeButton}
+                  aria-label="닫기"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* 콘텐츠 */}
+              <div className={styles.modalContent}>
+                {/* 메시지 타입 선택 */}
+                <div className={styles.inputGroup}>
+                  <label className={styles.label}>메시지 종류</label>
+                  <div className={styles.typeSelector}>
+                    {[
+                      { value: 'encouragement', label: '응원 메시지', icon: '💌', color: '#fd79a8' },
+                      { value: 'tip', label: '스피치 팁', icon: '💡', color: '#fdcb6e' },
+                      { value: 'quote', label: '명언', icon: '📜', color: '#74b9ff' }
+                    ].map((type) => (
+                      <button
+                        key={type.value}
+                        onClick={() => setNewType(type.value as Message["type"])}
+                        className={`${styles.typeButton} ${newType === type.value ? styles.typeButtonActive : ''}`}
+                        style={{
+                          '--accent-color': type.color
+                        } as React.CSSProperties}
+                      >
+                        <span className={styles.typeIcon}>{type.icon}</span>
+                        <span className={styles.typeLabel}>{type.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 메시지 내용 */}
+                <div className={styles.inputGroup}>
+                  <label className={styles.label}>메시지 내용</label>
+                  <div className={styles.textareaWrapper}>
+                    <textarea
+                      placeholder="따뜻한 응원 메시지를 입력해 주세요..."
+                      value={newContent}
+                      onChange={(e) => setNewContent(e.target.value)}
+                      className={styles.textarea}
+                      rows={4}
+                      maxLength={200}
+                    />
+                    <div className={styles.charCount}>
+                      {newContent.length}/200
+                    </div>
+                  </div>
+                </div>
+
+                {/* 작성자 이름 */}
+                <div className={styles.inputGroup}>
+                  <label className={styles.label}>작성자 이름 (선택)</label>
+                  <div className={styles.inputWrapper}>
+                    <input
+                      type="text"
+                      placeholder="익명"
+                      value={newAuthor}
+                      onChange={(e) => setNewAuthor(e.target.value)}
+                      className={styles.input}
+                      maxLength={20}
+                    />
+                    <div className={styles.inputIcon}>👤</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 액션 버튼 */}
+              <div className={styles.modalActions}>
+                <button 
+                  onClick={() => setIsWriting(false)} 
+                  className={styles.cancelButton}
+                >
+                  취소
+                </button>
+                <button 
+                  onClick={addNewMessage} 
+                  className={styles.saveButton}
+                  disabled={!newContent.trim()}
+                >
+                  <span className={styles.buttonIcon}>💌</span>
+                  저장하기
+                </button>
               </div>
             </div>
           </div>
