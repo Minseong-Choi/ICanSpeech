@@ -6,6 +6,7 @@ import ScriptReport from "../../../../../components/report/ScriptReport";
 import AIReport from "../../../../../components/report/AIReport";
 import { useSession } from 'next-auth/react';
 import Header from '@/components/Layout/Header';
+import MotionReport from "../../../../../components/report/MotionReport";
 
 export default function InterviewReportPage() {
   const searchParams = useSearchParams();
@@ -52,6 +53,7 @@ export default function InterviewReportPage() {
     <div style={{ display: "flex", gap: 24, padding: 24 }}>
       <ScriptReport videoUrl={videoUrl} transcript={transcript} />
       <AIReport feedback={feedback} />
+      <MotionReport videoUrl={videoUrl}/>
     </div>
     </div>
   );

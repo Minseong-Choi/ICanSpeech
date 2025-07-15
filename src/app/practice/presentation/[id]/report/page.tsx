@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import ScriptReport from "../../../../../components/report/ScriptReport";
 import AIReport from "../../../../../components/report/AIReport";
 import Header from '@/components/Layout/Header';
+import MotionReport from "../../../../../components/report/MotionReport";
 import { useSession } from 'next-auth/react';
 
 export default function PresentationReportPage() {
@@ -55,6 +56,7 @@ export default function PresentationReportPage() {
         <div style={{ display: "flex", gap: 24 }}>
           <ScriptReport videoUrl={videoUrl} transcript={transcript} />
           <AIReport feedback={feedback} />
+          <MotionReport videoUrl={videoUrl}/>
         </div>
       </div>
     );
