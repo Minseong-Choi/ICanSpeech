@@ -9,11 +9,10 @@ export async function POST(request: Request) {
   }
 
   const geminiApiKey = process.env.GEMINI_API_KEY;
-  console.log(geminiApiKey, "gggggggggggg");
 
   if (!geminiApiKey) {
     console.error("Server-side Gemini API Key is missing.");
-    return NextResponse.json({ message: "서버에 Gemini APIㅋㅋㅋㅋㅋㅋㅋ 키가 설정되지 않았습니다." }, { status: 500 });
+    return NextResponse.json({ message: "서버에 Gemini API 키가 설정되지 않았습니다." }, { status: 500 });
   }
 
   try {
@@ -22,9 +21,10 @@ export async function POST(request: Request) {
 
     const prompt = `${transcript}
       위 STT 텍스트는 제가 진행한 발표의 스크립트입니다. 이 스크립트를 바탕으로 다음 각 항목에 대해 구체적이고 건설적인 피드백과 개선 조언을 제공해 주세요.
+      평가 이외의 이야기는 제외하고 즉시 각 항목에 대하여 피드백만 해줘. 각 항목에 대한 피드백은 2-3문장 정도로 간결하게 작성해 주세요.
 
       1.  **불필요한 어구 및 반복 (Filler Words & Repetition):**
-          * 발표의 흐름을 방해하거나 의미 없이 반복되는 어구 (예: "음...", "아...", "그러니까...", "뭐랄까...", "사실은...")가 눈에 띄게 많았습니까?
+          * 발표의 흐름을 방해하거나 의미 없이 반복되는 어구. 특히 (음, 쫌, 근데, 이제, 약간, 살짝, 조금, 뭐랄까)와 같은 어구가 몇 번 사용되었는지를 피드백 해줘.
           * 동일한 단어, 구문, 아이디어가 불필요하게 자주 반복되어 지루함을 유발하거나 설득력을 떨어뜨리지는 않았습니까? (핵심 메시지 강조를 위한 의도적인 반복은 제외)
           * 이러한 요소들이 발표의 전문성이나 명확성을 해쳤습니까?
           
