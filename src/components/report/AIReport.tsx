@@ -64,8 +64,8 @@ export default function AIReport({ feedback, isLoading = false }: Props) {
         category,
         icon,
         color,
-        content: feedbackLines.join(' ').substring(0, 200) + (feedbackLines.join(' ').length > 200 ? '...' : ''),
-        advice: adviceLines.join(' ').substring(0, 150) + (adviceLines.join(' ').length > 150 ? '...' : '')
+        content: feedbackLines.join(' '),
+        advice: adviceLines.join(' ')
       };
     }).filter(Boolean) as ParsedFeedback[];
   };

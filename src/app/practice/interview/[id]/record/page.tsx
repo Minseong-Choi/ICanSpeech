@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import WebcamView from "../../../../../components/practice/WebcamView"; 
-import ScriptView from "../../../../../components/practice/ScriptView"; 
+//import ScriptView from "../../../../../components/practice/ScriptView"; 
 import UploadMaterial from "../../../../../components/practice/UploadMaterial"; 
 import Header from '@/components/Layout/Header';
 import { useSession } from 'next-auth/react';
@@ -112,7 +112,7 @@ export default function PresentationRecordPage() {
       if (response.ok) {
         const data = await response.json();
         alert("녹화 영상이 성공적으로 저장되었습니다!");
-        router.push(`/practice/presentation/${projectId}/report?recordingId=${data.recordingId}`);
+        router.push(`/practice/interview/${projectId}/report?recordingId=${data.recordingId}`);
       } else {
         const errorData = await response.json();
         alert(`영상 저장 실패: ${errorData.error}`);
