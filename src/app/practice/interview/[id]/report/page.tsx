@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import ScriptReport from "../../../../../components/report/ScriptReport";
 import AIReport from "../../../../../components/report/AIReport";
+import { useSession } from 'next-auth/react';
+import Header from '@/components/Layout/Header';
 
 export default function InterviewReportPage() {
   const searchParams = useSearchParams();
@@ -11,7 +13,8 @@ export default function InterviewReportPage() {
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [transcript, setTranscript] = useState<string>("");
   const [feedback, setFeedback] = useState<string[]>([]);
-
+  const { data: session, status } = useSession();
+  
   useEffect(() => {
     if (recordingId) {
       fetch(`/api/recordings?id=${recordingId}`)
@@ -36,9 +39,20 @@ export default function InterviewReportPage() {
   }
 
   return (
+      <div
+        style={{
+          padding: 24,
+          paddingTop: 80, 
+          backgroundColor: "#f9f9f9",
+          minHeight: "100vh",
+          gap: 24,
+        }}
+      >
+      <Header user={session?.user} />
     <div style={{ display: "flex", gap: 24, padding: 24 }}>
       <ScriptReport videoUrl={videoUrl} transcript={transcript} />
       <AIReport feedback={feedback} />
+    </div>
     </div>
   );
 }

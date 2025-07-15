@@ -6,8 +6,11 @@ import BackButton from "../../../../../components/UI/BackButton";
 import WebcamView from "../../../../../components/practice/WebcamView"; 
 import ScriptView from "../../../../../components/practice/ScriptView"; 
 import UploadMaterial from "../../../../../components/practice/UploadMaterial"; 
+import Header from '@/components/Layout/Header';
+import { useSession } from 'next-auth/react';
 
 export default function PresentationRecordPage() {
+  const { data: session, status } = useSession();
   const router = useRouter();
   const params = useParams(); 
   const { id: projectId } = params;
@@ -125,18 +128,18 @@ export default function PresentationRecordPage() {
   return (
     <div
       style={{
-        padding: 24,
+        paddingTop: 80, // 헤더 높이만큼 위쪽 공간 확보
+        paddingLeft: 24,
+        paddingRight: 24,
+        paddingBottom: 24,
         display: "flex",
         flexDirection: "column",
         gap: 24,
-        backgroundColor: "#f5f5f5",
+        backgroundColor: "#f9f9f9",
         minHeight: "100vh",
       }}
     >
-      {/* 상단: 뒤로가기 */}
-      <div style={{ display: "flex", justifyContent: "flex-start" }}>
-        <BackButton />
-      </div>
+      <Header user={session?.user} />
 
       {/* 본문: 왼쪽 (웹캠 + 버튼) / 오른쪽 (스크립트) */}
       <div style={{ display: "flex", gap: 24, flex: 1 }}>

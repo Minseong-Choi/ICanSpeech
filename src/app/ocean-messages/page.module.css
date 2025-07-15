@@ -1,9 +1,21 @@
 /* app/ocean-messages/page.module.css */
-.container {
-    min-height: 100vh;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  .container {
     position: relative;
-    overflow-x: hidden;
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+    font-family: sans-serif;
+  }
+
+  .videoBackground {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 100vw;
+    min-height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+    pointer-events: none;
   }
   
   .main {
