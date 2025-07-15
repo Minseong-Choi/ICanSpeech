@@ -1,159 +1,158 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
-import { MdFileUpload, MdDelete, MdNavigateBefore, MdNavigateNext } from "react-icons/md";
+import { useState, useRef } from "react";
 
-// SSR 비활성화
-const Document = dynamic(() => import("react-pdf").then(mod => mod.Document), { ssr: false });
-const Page = dynamic(() => import("react-pdf").then(mod => mod.Page), { ssr: false });
-
-type Props = {
-  text?: string;
-  onClick?: () => void;
-};
-
-export default function UploadMaterial({ text = "자료 추가하기", onClick }: Props) {
+export default function UploadMaterial() {
+  const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
-  const [numPages, setNumPages] = useState<number>(0);
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
     if (file && file.type === "application/pdf") {
-      const url = URL.createObjectURL(file);
-      setPdfUrl(url);
-      setCurrentPage(1); // 첫 페이지로 초기화
+      setPdfFile(file);
+      
+      // 기존 URL이 있다면 해제
+      if (pdfUrl) {
+        URL.revokeObjectURL(pdfUrl);
+      }
+      
+      // 새로운 URL 생성
+      const newUrl = URL.createObjectURL(file);
+      setPdfUrl(newUrl);
+    } else {
+      alert("PDF 파일만 업로드할 수 있습니다.");
     }
   };
 
-  const handleLoadSuccess = ({ numPages }: { numPages: number }) => {
-    setNumPages(numPages);
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
   };
 
-  const handleDelete = () => {
-    if (pdfUrl) URL.revokeObjectURL(pdfUrl);
+  const handleRemoveFile = () => {
+    if (pdfUrl) {
+      URL.revokeObjectURL(pdfUrl);
+    }
+    setPdfFile(null);
     setPdfUrl(null);
-    setNumPages(0);
-    setCurrentPage(1);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
-
-  const goToPrev = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
-  const goToNext = () => setCurrentPage((prev) => Math.min(prev + 1, numPages));
-
-  useEffect(() => {
-    return () => {
-      if (pdfUrl) URL.revokeObjectURL(pdfUrl);
-    };
-  }, [pdfUrl]);
 
   return (
-    <div style={{ width: "100%" }}>
-      {!pdfUrl ? (
-        <div
-          onClick={onClick}
-          style={{
-            width: "100%",
-            height: 400,
-            borderRadius: 12,
-            border: "1px solid lightgray",
-            backgroundColor: "#F4F6FE",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            cursor: "pointer",
-            color: "#999",
-          }}
-        >
-          <MdFileUpload size={32} style={{ marginBottom: 8 }} />
-          <span style={{ fontSize: 13, textAlign: "center" }}>{text}</span>
-          <input
-            id="pdfInput"
-            type="file"
-            accept="application/pdf"
-            onChange={handleFileChange}
-            style={{ display: "none" }}
-          />
-        </div>
-      ) : (
-        <div
-          style={{
-            position: "relative",
-            borderRadius: 12,
-            border: "1px solid lightgray",
-            backgroundColor: "#fff",
-            padding: 16,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <button
-            onClick={handleDelete}
+    <div style={{ marginBottom: 24 }}>
+      <h3 style={{ 
+        fontSize: 18, 
+        fontWeight: "bold", 
+        marginBottom: 16,
+        color: "#333"
+      }}>
+        발표 자료 업로드
+      </h3>
+      
+      {/* 파일 업로드 영역 */}
+      <div style={{ marginBottom: 16 }}>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".pdf"
+          onChange={handleFileSelect}
+          style={{ display: "none" }}
+        />
+        
+        {!pdfFile ? (
+          <div
+            onClick={handleUploadClick}
             style={{
-              position: "absolute",
-              top: 12,
-              right: 12,
-              backgroundColor: "#f44336",
-              color: "#fff",
-              border: "none",
-              borderRadius: 4,
-              padding: "4px 8px",
+              border: "2px dashed #ccc",
+              borderRadius: 8,
+              padding: 24,
+              textAlign: "center",
               cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: 4,
+              backgroundColor: "#f9f9f9",
+              transition: "all 0.2s ease",
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.borderColor = "#225AB4";
+              e.currentTarget.style.backgroundColor = "#f0f4ff";
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.borderColor = "#ccc";
+              e.currentTarget.style.backgroundColor = "#f9f9f9";
             }}
           >
-            <MdDelete size={16} />
-            삭제
-          </button>
-
-          <div style={{ height: 400, overflow: "auto" }}>
-            <Document
-              file={pdfUrl}
-              onLoadSuccess={handleLoadSuccess}
-              loading={<div>PDF 불러오는 중...</div>}
-              error={<div style={{ color: "red" }}>PDF 로딩 실패</div>}
-            >
-              <Page pageNumber={currentPage} width={600} />
-            </Document>
+            <div style={{ fontSize: 14, color: "#666", marginBottom: 8 }}>
+              📄 PDF 파일을 클릭하여 업로드하세요
+            </div>
+            <div style={{ fontSize: 12, color: "#999" }}>
+              지원 형식: PDF
+            </div>
           </div>
-
-          <div style={{ marginTop: 16, display: "flex", alignItems: "center", gap: 16 }}>
+        ) : (
+          <div style={{
+            border: "1px solid #ddd",
+            borderRadius: 8,
+            padding: 12,
+            backgroundColor: "#f9f9f9",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center"
+          }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ fontSize: 16 }}>📄</span>
+              <span style={{ fontSize: 14, fontWeight: "500" }}>
+                {pdfFile.name}
+              </span>
+              <span style={{ fontSize: 12, color: "#666" }}>
+                ({Math.round(pdfFile.size / 1024)} KB)
+              </span>
+            </div>
             <button
-              onClick={goToPrev}
-              disabled={currentPage <= 1}
+              onClick={handleRemoveFile}
               style={{
-                backgroundColor: "#ddd",
+                backgroundColor: "#ff4444",
+                color: "white",
                 border: "none",
-                padding: "6px 10px",
-                borderRadius: 6,
-                cursor: "pointer",
+                borderRadius: 4,
+                padding: "4px 8px",
+                fontSize: 12,
+                cursor: "pointer"
               }}
             >
-              <MdNavigateBefore size={20} />
-            </button>
-
-            <span>
-              {currentPage} / {numPages}
-            </span>
-
-            <button
-              onClick={goToNext}
-              disabled={currentPage >= numPages}
-              style={{
-                backgroundColor: "#ddd",
-                border: "none",
-                padding: "6px 10px",
-                borderRadius: 6,
-                cursor: "pointer",
-              }}
-            >
-              <MdNavigateNext size={20} />
+              삭제
             </button>
           </div>
+        )}
+      </div>
+
+      {/* PDF 뷰어 */}
+      {pdfUrl && (
+        <div style={{
+          border: "1px solid #ddd",
+          borderRadius: 8,
+          overflow: "hidden",
+          backgroundColor: "#fff"
+        }}>
+          <div style={{
+            padding: 12,
+            backgroundColor: "#f5f5f5",
+            borderBottom: "1px solid #ddd",
+            fontSize: 14,
+            fontWeight: "500"
+          }}>
+            PDF 미리보기
+          </div>
+          <iframe
+            src={pdfUrl}
+            style={{
+              width: "100%",
+              height: 400,
+              border: "none"
+            }}
+            title="PDF 뷰어"
+          />
         </div>
       )}
     </div>
