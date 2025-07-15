@@ -135,11 +135,18 @@
     animation-delay: -2s;
   }
   
-  .bottleIcon {
-    font-size: 2.5rem;
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
-    animation: bounce 2s ease-in-out infinite;
+  .bottleImage {
+    width: 150px;
+    height: auto;
+    animation: float 3s ease-in-out infinite;
   }
+
+  @keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+  }
+
   
   .bottleRipple {
     position: absolute;

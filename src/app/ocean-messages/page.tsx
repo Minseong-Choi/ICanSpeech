@@ -122,7 +122,7 @@ export default function OceanMessagesPage() {
             ))}
           </div>
 
-          <div className={styles.legend}>
+          {/* <div className={styles.legend}>
             <div className={styles.legendItem}>
               <span className={styles.legendIcon}>💌</span>
               <span>응원 메시지</span>
@@ -135,7 +135,7 @@ export default function OceanMessagesPage() {
               <span className={styles.legendIcon}>📜</span>
               <span>명언</span>
             </div>
-          </div>
+          </div> */}
         </div>
 
         {selectedMessage && (
