@@ -78,7 +78,6 @@ export default function TakeList({ takes, recordings, type, onUploadClick }: Pro
           .slice()
           .reverse()
           .map((take, index) => {
-            // Re-add .slice().reverse() to display oldest card on the left
             const recording = recordings.slice().reverse()[index]; 
             return (
               <TakeCard
