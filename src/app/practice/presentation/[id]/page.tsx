@@ -70,7 +70,6 @@ export default function PresentationPage() {
       {/* 녹화 및 업로드 카드 리스트 */}
       <CardList
         takes={takes}
-        recordings={project?.recordings || []}
         type="presentation"
         onUploadClick={handleUploadClick}
       />

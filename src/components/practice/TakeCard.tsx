@@ -4,6 +4,7 @@ interface TakeCardProps {
   index: number;           // 몇 번째 연습인지 (1, 2, 3, ...)
   date?: string;           // 날짜 (선택)
   onClick?: () => void;    // 클릭 시 이동
+  onDelete?: () => void;   // 삭제 핸들러 추가
 }
 
 const formatDate = (dateString?: string) => {

@@ -138,7 +138,7 @@ export async function GET(request: Request) {
     }
 
     const recording = await db.collection('recordings').findOne({
-      _id: new ObjectId(recordingId),
+      _id: new ObjectId(recordingId.replace(/-/g, '')),
       userEmail: session.user.email,
     });
 
