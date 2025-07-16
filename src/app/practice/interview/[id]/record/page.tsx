@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import WebcamView from "../../../../../components/practice/WebcamView"; 
 //import ScriptView from "../../../../../components/practice/ScriptView"; 
@@ -22,6 +22,7 @@ export default function InterviewRecordPage() {
   const [selectedQuestion, setSelectedQuestion] = useState<string>("");
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const recordedChunksRef = useRef<Blob[]>([]);
@@ -57,10 +58,13 @@ export default function InterviewRecordPage() {
     setSelectedQuestion(commonInterviewQuestions[randomIndex]);
   };
 
-  // 컴포넌트 마운트 시 첫 번째 랜덤 질문 설정
-  useState(() => {
-    getRandomQuestion();
-  });
+  // 클라이언트 사이드에서만 실행되도록 수정
+  useEffect(() => {
+    setIsClient(true);
+    // 첫 번째 질문을 첫 번째 질문으로 고정하여 hydration 에러 방지
+    setCurrentQuestionIndex(0);
+    setSelectedQuestion(commonInterviewQuestions[0]);
+  }, []);
 
   const handleRecordClick = async () => {
     let activeStream = stream;
@@ -141,81 +145,35 @@ export default function InterviewRecordPage() {
       const blob = await fetch(previewUrl).then((res) => res.blob());
       const videoFile = new File([blob], "recorded-video.webm", { type: "video/webm" });
 
-      // 1단계: 비디오 파일 업로드 및 녹화 레코드 생성
       const formData = new FormData();
       formData.append("projectId", projectId as string);
       formData.append("video", videoFile);
 
-      console.log("1단계: 면접 영상 업로드 중...");
-      const uploadResponse = await fetch("/api/recordings", {
+      const response = await fetch("/api/recordings", {
         method: "POST",
         body: formData,
       });
 
-      if (!uploadResponse.ok) {
-        const errorData = await uploadResponse.json();
-        throw new Error(`영상 저장 실패: ${errorData.error}`);
-      }
-
-      const uploadData = await uploadResponse.json();
-      const recordingId = uploadData.recordingId;
-
-      console.log("2단계: 면접 답변 STT 처리 중...", recordingId);
-      
-      // 2단계: STT 처리
-      const sttFormData = new FormData();
-      sttFormData.append("video", videoFile);
-      sttFormData.append("recordingId", recordingId);
-
-      const sttResponse = await fetch("/api/stt", {
-        method: "POST",
-        body: sttFormData,
-      });
-
-      if (!sttResponse.ok) {
-        const sttError = await sttResponse.json();
-        console.error("STT 실패:", sttError);
+      if (response.ok) {
+        const data = await response.json();
+        alert("녹화 영상이 성공적으로 저장되었습니다!");
+        router.push(`/practice/interview/${projectId}/report?recordingId=${data.recordingId}`);
       } else {
-        const sttData = await sttResponse.json();
-        console.log("STT 완료:", sttData.transcript);
-
-        // 3단계: Gemini 면접 피드백 생성
-        if (sttData.transcript && sttData.transcript.trim()) {
-          console.log("3단계: 면접 평가 생성 중...");
-          
-          try {
-            const geminiResponse = await fetch("/api/gemini-feedback", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ transcript: sttData.transcript }),
-            });
-
-            if (geminiResponse.ok) {
-              const geminiData = await geminiResponse.json();
-              console.log("면접 평가 완료:", geminiData.feedback);
-            } else {
-              console.error("면접 평가 생성 실패");
-            }
-          } catch (geminiError) {
-            console.error("Gemini API 호출 실패:", geminiError);
-          }
-        }
+        const errorData = await response.json();
+        alert(`영상 저장 실패: ${errorData.error}`);
       }
-
-      // 4단계: 면접 결과 페이지로 이동
-      console.log("4단계: 면접 결과 페이지로 이동");
-      alert("면접 녹화 및 분석이 완료되었습니다!");
-      router.push(`/practice/interview/${projectId}/report?recordingId=${recordingId}`);
-
     } catch (error) {
-      console.error("처리 실패:", error);
-      alert(error instanceof Error ? error.message : "면접 영상 처리 중 오류가 발생했습니다.");
+      console.error("Failed to save recording:", error);
+      alert("영상 저장 중 오류가 발생했습니다.");
     } finally {
       setIsProcessing(false);
     }
   };
+
+  // 클라이언트 렌더링이 완료되기 전에는 로딩 표시
+  if (!isClient) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div style={{
@@ -224,6 +182,7 @@ export default function InterviewRecordPage() {
       paddingTop: "80px",
       position: "relative"
     }}>
+      {/* 나머지 JSX는 그대로... */}
       <Header user={session?.user ?? null} />
       
       {/* 면접용 배경 패턴 */}
@@ -298,7 +257,7 @@ export default function InterviewRecordPage() {
           <div style={{ 
             flex: "1.2",
             position: "sticky",
-            top: "96px", // 헤더(80px) + 여백(16px)
+            top: "96px",
             alignSelf: "flex-start",
             zIndex: 10
           }}>
@@ -529,14 +488,6 @@ export default function InterviewRecordPage() {
                     transition: "all 0.3s ease",
                     boxShadow: "0 4px 12px rgba(155, 89, 182, 0.3)"
                   }}
-                  onMouseOver={(e) => {
-                    e.currentTarget.style.backgroundColor = isRecording ? "#4b5563" : "#b91c1c";
-                    e.currentTarget.style.transform = "translateY(-1px)";
-                  }}
-                  onMouseOut={(e) => {
-                    e.currentTarget.style.backgroundColor = isRecording ? "#6b7280" : "#dc2626";
-                    e.currentTarget.style.transform = "translateY(0)";
-                  }}
                 >
                   🔄 새 질문
                 </button>
@@ -674,14 +625,6 @@ export default function InterviewRecordPage() {
                   color: "#ffffff",
                   transition: "all 0.3s ease",
                   boxSizing: "border-box"
-                }}
-                onFocus={(e) => {
-                  e.target.style.borderColor = "#3498db";
-                  e.target.style.boxShadow = "0 0 0 3px rgba(52, 152, 219, 0.2)";
-                }}
-                onBlur={(e) => {
-                  e.target.style.borderColor = "rgba(255, 255, 255, 0.2)";
-                  e.target.style.boxShadow = "none";
                 }}
               />
               <div style={{ 
