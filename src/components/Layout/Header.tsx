@@ -45,12 +45,12 @@ export default function Header( {user} : HeaderProps ) {
           <Link href="/dashboard" className={styles.navLink}>
             대시보드
           </Link>
-          <Link href="/practice" className={styles.navLink}>
+          {/* <Link href="/practice" className={styles.navLink}>
             연습하기
-          </Link>
-          {/* <Link href="/mypage" className={styles.navLink}>
-            마이페이지
           </Link> */}
+          <Link href="/mypage" className={styles.navLink}>
+            마이페이지
+          </Link>
           <Link href="/ocean-messages" className={styles.navLink}>
             응원메시지
           </Link>
