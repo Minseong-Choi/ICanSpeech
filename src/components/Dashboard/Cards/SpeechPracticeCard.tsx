@@ -152,7 +152,7 @@ export default function SpeechPracticeCard() {
         {practices.length > 5 && (
           <button 
             className={styles.viewAllButton}
-            onClick={() => router.push('/practices')}
+            onClick={() => router.push('/practice')}
           >
             모든 프로젝트 보기
           </button>
@@ -165,7 +165,7 @@ export default function SpeechPracticeCard() {
           <span className={styles.statLabel}>총 프로젝트</span>
         </div>
         <div className={styles.stat}>
-          <span className={styles.statValue}>8.5</span>
+          <span className={styles.statValue}>35</span>
           <span className={styles.statLabel}>평균 점수</span>
         </div>
         <div className={styles.stat}>
