@@ -9,7 +9,7 @@ import { useSession } from 'next-auth/react';
 export default function InterviewPage() {
   const params = useParams();
   const { id } = params;
-  const [project, setProject] = useState<{ title: string; recordingCount: number; recordings: Recording[] } | null>(null);
+  const [project, setProject] = useState<{ title: string; recordingCount: number; targetCount?: number; recordings: Recording[] } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { data: session } = useSession();
 
@@ -195,14 +195,14 @@ export default function InterviewPage() {
                 fontWeight: "700",
                 marginBottom: "8px"
               }}>
-                {project?.recordings?.length || 0}
+                {project?.targetCount ?? '-'}
               </div>
               <div style={{
                 color: "rgba(255, 255, 255, 0.8)",
                 fontSize: "1rem",
                 fontWeight: "500"
               }}>
-                완료된 녹화
+                목표 녹화 횟수
               </div>
             </div>
             
@@ -215,9 +215,9 @@ export default function InterviewPage() {
                 fontWeight: "700",
                 marginBottom: "8px"
               }}>
-                {project?.recordingCount && project?.recordings 
-                  ? Math.round((project.recordings.length / project.recordingCount) * 100)
-                  : 0}%
+              {typeof project?.targetCount === 'number' && project?.recordings
+                ? Math.round((project.recordings.length / project.targetCount) * 100)
+                : 0}%
               </div>
               <div style={{
                 color: "rgba(255, 255, 255, 0.8)",
