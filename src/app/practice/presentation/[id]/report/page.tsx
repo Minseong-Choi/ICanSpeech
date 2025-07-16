@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { useSession } from 'next-auth/react';
+import Header from '@/components/Layout/Header';
 import ScriptReport from "../../../../../components/report/ScriptReport";
 import AIReport from "../../../../../components/report/AIReport";
-import Header from '@/components/Layout/Header';
-import { useSession } from 'next-auth/react';
 
 export default function PresentationReportPage() {
   const searchParams = useSearchParams();
@@ -30,7 +30,6 @@ export default function PresentationReportPage() {
             setTranscript(fetchedTranscript);
             setIsLoadingData(false);
 
-            // Call server-side API for feedback if transcript is available and not an error message
             if (fetchedTranscript && !fetchedTranscript.includes("실패했습니다")) {
               setIsLoadingFeedback(true);
               setLoadingStage("AI가 발표를 분석하는 중...");
@@ -53,7 +52,6 @@ export default function PresentationReportPage() {
                 })
                 .then((data) => {
                   setLoadingStage("분석 결과를 정리하는 중...");
-                  // 약간의 딜레이로 사용자가 진행 상황을 인지할 수 있도록
                   setTimeout(() => {
                     if (data.feedback) {
                       setFeedback(data.feedback.split('\n').filter(Boolean));
@@ -86,7 +84,6 @@ export default function PresentationReportPage() {
     }
   }, [recordingId]); 
 
-  // 전체 데이터 로딩 중
   if (isLoadingData || !videoUrl) {
     return (
       <div style={{
@@ -98,7 +95,6 @@ export default function PresentationReportPage() {
         color: "#ffffff",
         position: "relative"
       }}>
-        {/* 배경 패턴 */}
         <div style={{
           position: "absolute",
           top: 0,
@@ -156,7 +152,6 @@ export default function PresentationReportPage() {
             </p>
           </div>
           
-          {/* 진행률 표시 */}
           <div style={{
             width: "100%",
             height: "4px",
@@ -197,7 +192,6 @@ export default function PresentationReportPage() {
     }}>
       <Header user={session?.user ?? null} />
       
-      {/* 배경 패턴 */}
       <div style={{
         position: "absolute",
         top: 0,
@@ -212,7 +206,6 @@ export default function PresentationReportPage() {
         zIndex: 1
       }}></div>
 
-      {/* 메인 컨테이너 */}
       <div style={{
         maxWidth: "1200px",
         margin: "0 auto",
@@ -220,7 +213,6 @@ export default function PresentationReportPage() {
         position: "relative",
         zIndex: 2
       }}>
-        {/* 페이지 타이틀 */}
         <div style={{
           marginBottom: "32px",
           textAlign: "center"
@@ -244,7 +236,6 @@ export default function PresentationReportPage() {
           </p>
         </div>
 
-        {/* AI 분석 중 알림 배너 */}
         {isLoadingFeedback && (
           <div style={{
             background: "rgba(102, 126, 234, 0.2)",
@@ -286,7 +277,6 @@ export default function PresentationReportPage() {
               </p>
             </div>
             
-            {/* 진행률 바 */}
             <div style={{
               width: "100px",
               height: "6px",
@@ -304,7 +294,6 @@ export default function PresentationReportPage() {
           </div>
         )}
 
-        {/* 리포트 섹션 */}
         <div style={{
           display: "grid",
           gridTemplateColumns: "1fr 1fr",
@@ -315,7 +304,6 @@ export default function PresentationReportPage() {
         </div>
       </div>
 
-      {/* 애니메이션 스타일 */}
       <style>{`
         @keyframes spin {
           0% { transform: rotate(0deg); }

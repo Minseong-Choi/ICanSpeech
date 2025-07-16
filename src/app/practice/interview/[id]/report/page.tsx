@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import ScriptReport from "../../../../../components/report/ScriptReport";
-import AIReport from "../../../../../components/report/AIReport";
 import { useSession } from 'next-auth/react';
 import Header from '@/components/Layout/Header';
+import ScriptReport from "../../../../../components/report/ScriptReport";
+import AIReport from "../../../../../components/report/AIReport";
 
 export default function InterviewReportPage() {
   const searchParams = useSearchParams();
@@ -30,7 +30,6 @@ export default function InterviewReportPage() {
             setTranscript(fetchedTranscript);
             setIsLoadingData(false);
 
-            // Call server-side API for feedback if transcript is available and not an error message
             if (fetchedTranscript && !fetchedTranscript.includes("실패했습니다")) {
               setIsLoadingFeedback(true);
               setLoadingStage("AI가 면접 답변을 분석하는 중...");
@@ -53,7 +52,6 @@ export default function InterviewReportPage() {
                 })
                 .then((data) => {
                   setLoadingStage("면접 평가 결과를 생성하는 중...");
-                  // 약간의 딜레이로 사용자가 진행 상황을 인지할 수 있도록
                   setTimeout(() => {
                     if (data.feedback) {
                       setFeedback(data.feedback.split('\n').filter(Boolean));
@@ -86,7 +84,6 @@ export default function InterviewReportPage() {
     }
   }, [recordingId]); 
 
-  // 전체 데이터 로딩 중
   if (isLoadingData || !videoUrl) {
     return (
       <div style={{
@@ -98,7 +95,6 @@ export default function InterviewReportPage() {
         color: "#ffffff",
         position: "relative"
       }}>
-        {/* 면접용 배경 패턴 */}
         <div style={{
           position: "absolute",
           top: 0,
@@ -156,7 +152,6 @@ export default function InterviewReportPage() {
             </p>
           </div>
           
-          {/* 진행률 표시 */}
           <div style={{
             width: "100%",
             height: "4px",
@@ -197,7 +192,6 @@ export default function InterviewReportPage() {
     }}>
       <Header user={session?.user ?? null} />
       
-      {/* 면접용 배경 패턴 */}
       <div style={{
         position: "absolute",
         top: 0,
@@ -212,7 +206,6 @@ export default function InterviewReportPage() {
         zIndex: 1
       }}></div>
 
-      {/* 메인 컨테이너 */}
       <div style={{
         maxWidth: "1400px",
         margin: "0 auto",
@@ -220,7 +213,6 @@ export default function InterviewReportPage() {
         position: "relative",
         zIndex: 2
       }}>
-        {/* 페이지 타이틀 */}
         <div style={{
           marginBottom: "32px",
           textAlign: "center"
@@ -265,7 +257,6 @@ export default function InterviewReportPage() {
           </p>
         </div>
 
-        {/* AI 분석 중 알림 배너 (면접 특화) */}
         {isLoadingFeedback && (
           <div style={{
             background: "rgba(52, 152, 219, 0.2)",
@@ -310,7 +301,6 @@ export default function InterviewReportPage() {
               </p>
             </div>
             
-            {/* 진행률 바 */}
             <div style={{
               width: "100px",
               height: "6px",
@@ -328,7 +318,6 @@ export default function InterviewReportPage() {
           </div>
         )}
 
-        {/* 면접 통계 요약 카드 */}
         <div style={{
           background: "rgba(255, 255, 255, 0.1)",
           backdropFilter: "blur(20px)",
@@ -426,7 +415,6 @@ export default function InterviewReportPage() {
           </div>
         </div>
 
-        {/* 리포트 섹션 */}
         <div style={{
           display: "grid",
           gridTemplateColumns: "1fr 1fr",
@@ -438,7 +426,6 @@ export default function InterviewReportPage() {
         </div>
       </div>
 
-      {/* 애니메이션 스타일 */}
       <style>{`
         @keyframes spin {
           0% { transform: rotate(0deg); }

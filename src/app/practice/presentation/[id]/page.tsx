@@ -252,108 +252,324 @@ export default function PresentationPage() {
             🎬 연습 세션
           </h2>
           
-          <CardList
-            takes={takes}
-            recordings={project?.recordings || []}
-            type="presentation"
-            onUploadClick={handleUploadClick}
-          />
-        </div>
-
-        {/* AI 분석 결과 카드 */}
-        <div style={{
-          background: "rgba(255, 255, 255, 0.1)",
-          borderRadius: "16px",
-          padding: "24px",
-          backdropFilter: "blur(20px)",
-          border: "1px solid rgba(255, 255, 255, 0.2)",
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
-          marginBottom: "32px",
-          position: "relative",
-          overflow: "hidden"
-        }}>
-          {/* 상단 액센트 라인 */}
-          <div style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            height: "3px",
-            background: "linear-gradient(90deg, #667eea 0%, #764ba2 100%)"
-          }}></div>
-          
-          <div style={{
-            display: "flex",
-            alignItems: "flex-start",
-            gap: "16px"
-          }}>
-            {/* AI 아이콘 */}
+          {(project?.recordings && project.recordings.length > 0) ? (
+            <CardList
+              takes={takes}
+              recordings={project?.recordings || []}
+              type="presentation"
+              onUploadClick={handleUploadClick}
+            />
+          ) : (
+            /* 연습 영상이 없을 때 표시되는 안내 */
             <div style={{
-              width: "48px",
-              height: "48px",
-              background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-              borderRadius: "12px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexShrink: 0,
-              boxShadow: "0 4px 12px rgba(102, 126, 234, 0.3)"
+              textAlign: "center",
+              padding: "40px 20px"
             }}>
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M12 2L13.09 6.26L17 4L16.74 8.74L21 7.27L19.23 11.38L24 12L19.23 12.62L21 16.73L16.74 15.26L17 20L13.09 17.74L12 22L10.91 17.74L7 20L7.26 15.26L3 16.73L4.77 12.62L0 12L4.77 11.38L3 7.27L7.26 8.74L7 4L10.91 6.26L12 2Z"
-                  fill="white"
-                />
-              </svg>
-            </div>
-            
-            {/* 콘텐츠 */}
-            <div style={{ flex: 1 }}>
               <div style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "12px",
+                fontSize: "4rem",
+                marginBottom: "20px",
+                opacity: 0.6
+              }}>
+                🎤
+              </div>
+              <h3 style={{
+                color: "#ffffff",
+                fontSize: "1.5rem",
+                fontWeight: "600",
                 marginBottom: "12px"
               }}>
-                <h3 style={{
-                  fontSize: "1.2rem",
-                  fontWeight: "600",
-                  color: "#ffffff",
-                  margin: 0
-                }}>
-                  🧠 AI 분석 결과
-                </h3>
-                <span style={{
-                  fontSize: "0.75rem",
-                  color: "rgba(255, 255, 255, 0.6)",
-                  background: "rgba(255, 255, 255, 0.1)",
-                  padding: "4px 8px",
-                  borderRadius: "12px",
-                  fontWeight: "500",
-                  border: "1px solid rgba(255, 255, 255, 0.1)"
-                }}>
-                  방금 전
-                </span>
-              </div>
-              
+                첫 번째 발표 연습을 시작해보세요!
+              </h3>
               <p style={{
+                color: "rgba(255, 255, 255, 0.8)",
                 fontSize: "1rem",
-                color: "rgba(255, 255, 255, 0.9)",
-                margin: 0,
                 lineHeight: "1.6",
-                fontWeight: "400"
+                marginBottom: "32px",
+                maxWidth: "500px",
+                margin: "0 auto 32px auto"
               }}>
-                발표 속도가 안정적이에요! 시선 처리가 훨씬 좋아졌어요.
+                아직 연습 영상이 없습니다. 아래 버튼을 클릭해서 첫 번째 발표 연습을 시작하고 AI 피드백을 받아보세요.
               </p>
+              
+              <button
+                onClick={() => window.location.href = `/practice/presentation/${id}/record`}
+                style={{
+                  padding: "16px 32px",
+                  background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "12px",
+                  fontSize: "1.1rem",
+                  fontWeight: "600",
+                  cursor: "pointer",
+                  transition: "all 0.3s ease",
+                  boxShadow: "0 4px 16px rgba(102, 126, 234, 0.3)",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "8px"
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.boxShadow = "0 6px 20px rgba(102, 126, 234, 0.4)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "0 4px 16px rgba(102, 126, 234, 0.3)";
+                }}
+              >
+                🎥 첫 연습 시작하기
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* 발표 가이드 섹션 (연습 영상이 없을 때만 표시) */}
+        {(!project?.recordings || project.recordings.length === 0) && (
+          <div style={{
+            background: "rgba(255, 255, 255, 0.1)",
+            borderRadius: "16px",
+            padding: "32px",
+            backdropFilter: "blur(20px)",
+            border: "1px solid rgba(255, 255, 255, 0.2)",
+            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
+            marginBottom: "32px"
+          }}>
+            <h3 style={{
+              color: "#ffffff",
+              fontSize: "1.4rem",
+              fontWeight: "600",
+              margin: "0 0 24px 0",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px"
+            }}>
+              📚 발표 연습 가이드
+            </h3>
+            
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+              gap: "20px"
+            }}>
+              {[
+                {
+                  icon: "📝",
+                  title: "1. 스크립트 준비",
+                  description: "발표할 내용을 미리 정리하고 핵심 포인트를 명확히 하세요."
+                },
+                {
+                  icon: "🎥",
+                  title: "2. 연습 녹화",
+                  description: "카메라 앞에서 실제 발표하듯이 연습하고 녹화해보세요."
+                },
+                {
+                  icon: "🧠",
+                  title: "3. AI 분석",
+                  description: "AI가 발표 내용, 속도, 발음 등을 종합적으로 분석해드립니다."
+                },
+                {
+                  icon: "📈",
+                  title: "4. 실력 향상",
+                  description: "피드백을 바탕으로 부족한 부분을 개선하고 반복 연습하세요."
+                }
+              ].map((step, index) => (
+                <div
+                  key={index}
+                  style={{
+                    background: "rgba(0, 0, 0, 0.2)",
+                    borderRadius: "12px",
+                    padding: "20px",
+                    border: "1px solid rgba(255, 255, 255, 0.1)",
+                    transition: "all 0.3s ease"
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "rgba(0, 0, 0, 0.3)";
+                    e.currentTarget.style.transform = "translateY(-4px)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "rgba(0, 0, 0, 0.2)";
+                    e.currentTarget.style.transform = "translateY(0)";
+                  }}
+                >
+                  <div style={{
+                    fontSize: "2rem",
+                    marginBottom: "12px"
+                  }}>
+                    {step.icon}
+                  </div>
+                  <h4 style={{
+                    color: "#ffffff",
+                    fontSize: "1.1rem",
+                    fontWeight: "600",
+                    margin: "0 0 8px 0"
+                  }}>
+                    {step.title}
+                  </h4>
+                  <p style={{
+                    color: "rgba(255, 255, 255, 0.8)",
+                    fontSize: "0.9rem",
+                    lineHeight: "1.5",
+                    margin: 0
+                  }}>
+                    {step.description}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
+        )}
+
+        {/* 발표 팁 섹션 (연습 영상이 없을 때만 표시) */}
+        {(!project?.recordings || project.recordings.length === 0) && (
+          <div style={{
+            background: "rgba(102, 126, 234, 0.15)",
+            border: "1px solid rgba(102, 126, 234, 0.3)",
+            borderRadius: "16px",
+            padding: "24px",
+            marginBottom: "32px"
+          }}>
+            <h4 style={{
+              color: "#667eea",
+              fontSize: "1.2rem",
+              fontWeight: "600",
+              margin: "0 0 16px 0",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px"
+            }}>
+              💡 성공적인 발표를 위한 팁
+            </h4>
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+              gap: "16px"
+            }}>
+              <div>
+                <ul style={{
+                  color: "rgba(255, 255, 255, 0.9)",
+                  fontSize: "0.9rem",
+                  lineHeight: "1.6",
+                  margin: 0,
+                  paddingLeft: "20px"
+                }}>
+                  <li>명확하고 자신감 있는 목소리로 발표하기</li>
+                  <li>청중과 적절한 아이컨택 유지하기</li>
+                  <li>핵심 메시지를 반복해서 강조하기</li>
+                </ul>
+              </div>
+              <div>
+                <ul style={{
+                  color: "rgba(255, 255, 255, 0.9)",
+                  fontSize: "0.9rem",
+                  lineHeight: "1.6",
+                  margin: 0,
+                  paddingLeft: "20px"
+                }}>
+                  <li>적절한 제스처로 내용 보강하기</li>
+                  <li>말의 속도와 크기 조절하기</li>
+                  <li>시간 배분을 고려한 구성하기</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* AI 분석 결과 카드 (연습 영상이 있을 때만 표시) */}
+        {(project?.recordings && project.recordings.length > 0) && (
+          <div style={{
+            background: "rgba(255, 255, 255, 0.1)",
+            borderRadius: "16px",
+            padding: "24px",
+            backdropFilter: "blur(20px)",
+            border: "1px solid rgba(255, 255, 255, 0.2)",
+            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
+            marginBottom: "32px",
+            position: "relative",
+            overflow: "hidden"
+          }}>
+            {/* 상단 액센트 라인 */}
+            <div style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              height: "3px",
+              background: "linear-gradient(90deg, #667eea 0%, #764ba2 100%)"
+            }}></div>
+            
+            <div style={{
+              display: "flex",
+              alignItems: "flex-start",
+              gap: "16px"
+            }}>
+              {/* AI 아이콘 */}
+              <div style={{
+                width: "48px",
+                height: "48px",
+                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                borderRadius: "12px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
+                boxShadow: "0 4px 12px rgba(102, 126, 234, 0.3)"
+              }}>
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12 2L13.09 6.26L17 4L16.74 8.74L21 7.27L19.23 11.38L24 12L19.23 12.62L21 16.73L16.74 15.26L17 20L13.09 17.74L12 22L10.91 17.74L7 20L7.26 15.26L3 16.73L4.77 12.62L0 12L4.77 11.38L3 7.27L7.26 8.74L7 4L10.91 6.26L12 2Z"
+                    fill="white"
+                  />
+                </svg>
+              </div>
+              
+              {/* 콘텐츠 */}
+              <div style={{ flex: 1 }}>
+                <div style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "12px",
+                  marginBottom: "12px"
+                }}>
+                  <h3 style={{
+                    fontSize: "1.2rem",
+                    fontWeight: "600",
+                    color: "#ffffff",
+                    margin: 0
+                  }}>
+                    🧠 AI 분석 결과
+                  </h3>
+                  <span style={{
+                    fontSize: "0.75rem",
+                    color: "rgba(255, 255, 255, 0.6)",
+                    background: "rgba(255, 255, 255, 0.1)",
+                    padding: "4px 8px",
+                    borderRadius: "12px",
+                    fontWeight: "500",
+                    border: "1px solid rgba(255, 255, 255, 0.1)"
+                  }}>
+                    방금 전
+                  </span>
+                </div>
+                
+                <p style={{
+                  fontSize: "1rem",
+                  color: "rgba(255, 255, 255, 0.9)",
+                  margin: 0,
+                  lineHeight: "1.6",
+                  fontWeight: "400"
+                }}>
+                  발표 속도가 안정적이에요! 시선 처리가 훨씬 좋아졌어요.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* 추가 액션 버튼들 */}
         <div style={{
