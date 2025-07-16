@@ -14,7 +14,8 @@ export default function NewPracticePage() {
     type: '',
     title: '',
     description: '',
-    materials: ''
+    materials: '',
+    targetCount: 1
   });
   const [loading, setLoading] = useState(false);
   // Removed projectCreated state as BackButton now handles logic based on URL params
@@ -39,10 +40,7 @@ export default function NewPracticePage() {
           type: formData.type,
           title: formData.title,
           description: formData.description,
-          materials: formData.materials ? [{
-            type: 'script',
-            content: formData.materials
-          }] : []
+          targetCount: formData.targetCount
         }),
       });
 
@@ -124,20 +122,22 @@ export default function NewPracticePage() {
 
           <div className={styles.formGroup}>
             <label htmlFor="materials" className={styles.label}>
-              준비 자료 {formData.type === 'interview' ? '(예상 질문)' : '(발표 대본)'}
+              목표 연습 횟수
             </label>
-            <textarea
-              id="materials"
-              className={styles.textarea}
-              placeholder={
-                formData.type === 'interview' 
-                  ? '예상 면접 질문을 입력하세요. (선택사항)'
-                  : '발표 대본이나 주요 포인트를 입력하세요. (선택사항)'
+            <select
+              id="targetCount"
+              className={styles.input}
+              value={formData.targetCount}
+              onChange={(e) =>
+                setFormData({ ...formData, targetCount: Number(e.target.value) })
               }
-              value={formData.materials}
-              onChange={(e) => setFormData({ ...formData, materials: e.target.value })}
-              rows={6}
-            />
+            >
+              {[1, 2, 3, 5, 10, 15, 20, 25, 30, 35, 40].map((count) => (
+                <option key={count} value={count}>
+                  {count}회
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className={styles.actions}>

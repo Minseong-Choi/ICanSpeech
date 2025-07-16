@@ -315,11 +315,11 @@ export default function PresentationRecordPage() {
                     boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
                   }}
                   onMouseOver={(e) => {
-                    e.currentTarget.style.backgroundColor = isRecording ? "#dc2626" : "#b91c1c";
+                    e.currentTarget.style.backgroundColor = isRecording ? "#4b5563" : "#b91c1c";
                     e.currentTarget.style.transform = "translateY(-1px)";
                   }}
                   onMouseOut={(e) => {
-                    e.currentTarget.style.backgroundColor = isRecording ? "#ef4444" : "#dc2626";
+                    e.currentTarget.style.backgroundColor = isRecording ? "6b7280" : "#dc2626";
                     e.currentTarget.style.transform = "translateY(0)";
                   }}
                 >

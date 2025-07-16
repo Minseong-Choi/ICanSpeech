@@ -80,7 +80,7 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { type, title, description, materials } = body;
+    const { type, title, description, materials, targetCount } = body;
 
     if (!type || !title) {
       return NextResponse.json(
@@ -102,6 +102,7 @@ export async function POST(request: Request) {
       title,
       description: description || '',
       materials: materials || [],
+      targetCount: targetCount || 1,
       createdAt: new Date(),
       updatedAt: new Date()
     };

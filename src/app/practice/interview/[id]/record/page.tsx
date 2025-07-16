@@ -529,12 +529,12 @@ export default function InterviewRecordPage() {
                     transition: "all 0.3s ease",
                     boxShadow: "0 4px 12px rgba(155, 89, 182, 0.3)"
                   }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = "linear-gradient(135deg, #8e44ad 0%, #732d91 100%)";
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.backgroundColor = isRecording ? "#4b5563" : "#b91c1c";
                     e.currentTarget.style.transform = "translateY(-1px)";
                   }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = "linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%)";
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.backgroundColor = isRecording ? "#6b7280" : "#dc2626";
                     e.currentTarget.style.transform = "translateY(0)";
                   }}
                 >
